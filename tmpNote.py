@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 import wx
 import wx.lib.agw.flatnotebook as fnb
 import wx.stc as stc
@@ -24,7 +23,6 @@ import os
 import datetime
 import webbrowser
 from tmpNoteIcon import gettmpNoteIconIcon
-
 
 __author__ = 'Joshua Gray'
 __email__ = 'joshua@tmpNote.com'
@@ -45,10 +43,10 @@ class FlatNotebook(fnb.FlatNotebook):
         """Define the initialization behavior of the FlatNotebook."""
 
         fnb.FlatNotebook.__init__(
-                self,
-                parent = parent,
-                id = wx.ID_ANY,
-                agwStyle = fnb.FNB_NO_TAB_FOCUS|fnb.FNB_X_ON_TAB
+            self,
+            parent = parent,
+            id = wx.ID_ANY,
+            agwStyle = fnb.FNB_NO_TAB_FOCUS|fnb.FNB_X_ON_TAB
         )
 
         self.SetActiveTabColour((34,34,34))
@@ -59,7 +57,6 @@ class FlatNotebook(fnb.FlatNotebook):
         self.right_click_menu()
         self.custom_page()
 
-
     def right_click_menu(self):
         """Create a right-click menu for each FlatNotebook page tab."""
 
@@ -68,7 +65,6 @@ class FlatNotebook(fnb.FlatNotebook):
         menu.Append(wx.ID_CLOSE, 'Close', 'Close')
         self.Bind(wx.EVT_MENU, self.close, id=wx.ID_CLOSE)
 
-
     def close(self, event):
         """Close the selected FlatNotebook page tab."""
 
@@ -76,7 +72,6 @@ class FlatNotebook(fnb.FlatNotebook):
         # This will trigger the EVT_FLATBOOK_PAGE_CLOSING event.
         # That event is bound to self.closing_file_event.
         self.DeletePage(self.GetSelection())
-
 
     def custom_page(self):
         """A page to display when all FlatNotebook page tabs are closed."""
@@ -90,13 +85,11 @@ class FlatNotebook(fnb.FlatNotebook):
         self.SetCustomPage(panel)
 
 
-
 # +-------------------------------------------------------------------------+
 # | NEW CLASS: Styled Text Control Creator                                  |
 # +-------------------------------------------------------------------------+
 class TxtCtrl(stc.StyledTextCtrl):
     """Create a StyledTextCtrl."""
-
 
     def __init__(self, parent, text, readonly):
         """Define the initialization behavior of the StyledTextCtrl."""
@@ -105,7 +98,6 @@ class TxtCtrl(stc.StyledTextCtrl):
         self.SetTextRaw(text)
         self.SetReadOnly(readonly) # bool
         self.set_styles()
-
 
     def set_styles(self):
         """Put the style in StyledTextCtrl."""
@@ -139,29 +131,26 @@ class TxtCtrl(stc.StyledTextCtrl):
         self.SetWrapMode(stc.STC_WRAP_WORD)
 
 
-
 # +-------------------------------------------------------------------------+
 # | NEW CLASS: TmpNote. Another text editor.                                |
 # +-------------------------------------------------------------------------+
 class TmpNote(wx.Frame): 
     """Create a TmpNote text editor application in a wx.Frame."""
 
-
     def __init__(self, parent):
         """Define the initialization behavior of the wx.Frame."""
 
         # Super is here for multiple inheritance in the future, not used yet.
         super(TmpNote, self).__init__(
-                parent = parent,
-                id = wx.ID_ANY,
-                title = ' tmpNote ',
-                size = (610, 400),
-                style = wx.DEFAULT_FRAME_STYLE,
+            parent = parent,
+            id = wx.ID_ANY,
+            title = ' tmpNote ',
+            size = (610, 400),
+            style = wx.DEFAULT_FRAME_STYLE
         )
 
         user_interface = self.ui()
         self.Show()
-
 
     def ui(self):
         """Assemble the pieces of the Graphical User Interface."""
@@ -190,7 +179,6 @@ class TmpNote(wx.Frame):
 
         panel.SetSizerAndFit(sizer)
         panel.Layout()
-
 
     def menu_bar(self):
         """Create a main menu bar."""
@@ -319,7 +307,6 @@ class TmpNote(wx.Frame):
         helpmenu.Append(901, 'tmpNote Website', 'Visit the tmpNote website.')
         self.Bind(wx.EVT_MENU, self.visit_website_event, id=901)
 
-
     def status_bar(self):
         """Create a status bar."""
 
@@ -336,7 +323,6 @@ class TmpNote(wx.Frame):
         self.statusbar.SetStatusText('No open file.', 1)
         self.statusbar.Show()
 
-
     def status_bar_toggle_event(self, event):
         """Event asking to toggle the status bar visibility."""
 
@@ -345,13 +331,11 @@ class TmpNote(wx.Frame):
         else:
             event.Skip()
 
-
     def status_bar_toggle_action(self):
         """Toggle the status bar visibility."""
 
         self.statusbar.Show(not self.statusbar.IsShown())
         self.SendSizeEvent()
-
 
     def notebook_visible_toggle_event(self, event):
         """Event asking to toggle the FlatNotebook visibility."""
@@ -361,14 +345,12 @@ class TmpNote(wx.Frame):
         else:
             event.Skip()
 
-
     def notebook_visible_toggle_action(self):
         """Toggle the FlatNotebook visibility."""
 
         self.notebook.Show(not self.notebook.IsShown())
         self.viewmenu.Check(406, self.notebook.IsShown())
         self.SendSizeEvent()
-
 
     def line_numbers_toggle_event(self, event):
         """Event asking to toggle the line numbers margin visibility."""
@@ -377,7 +359,6 @@ class TmpNote(wx.Frame):
             self.line_numbers_toggle_action()
         else:
             event.Skip()
-
 
     def line_numbers_toggle_action(self):
         """Toggle the line numbers margin visibility."""
@@ -402,7 +383,6 @@ class TmpNote(wx.Frame):
             self.notify_ok(self, message, caption)
             self.viewmenu.Check(403, checkbox_orig_value)
 
-
     def word_wrap_toggle_event(self, event):
         """Event asking to toggle the word wrap option."""
 
@@ -410,7 +390,6 @@ class TmpNote(wx.Frame):
             self.word_wrap_toggle_action()
         else:
             event.Skip()
-
 
     def word_wrap_toggle_action(self):
         """Toggle the word wrap option."""
@@ -431,7 +410,6 @@ class TmpNote(wx.Frame):
             self.notify_ok(self, message, caption)
             self.viewmenu.Check(401, checkbox_orig_value)
 
-
     def page_changed_event(self, event):
         """Event to gracefully change pages."""
 
@@ -443,7 +421,6 @@ class TmpNote(wx.Frame):
         self.viewmenu.Check(401, page.word_wrap)
         self.viewmenu.Check(403, page.line_numbers)
 
-
     def new_file_event(self, event):
         """Event requesting to create a new file."""
 
@@ -451,7 +428,6 @@ class TmpNote(wx.Frame):
             self.new_file()
         else:
             event.Skip()
-
 
     def new_file(self):
         """Create a new TextCtrl page and add it to the FlatNotebook."""
@@ -469,11 +445,10 @@ class TmpNote(wx.Frame):
         page.datetime = str(datetime.datetime.now())
 
         self.notebook.AddPage(
-                page = page,
-                text = 'Untitled',
-                select = True,
+            page = page,
+            text = 'Untitled',
+            select = True
         )
-
 
     def open_file_event(self, event):
         """Event requesting to open a file."""
@@ -483,7 +458,6 @@ class TmpNote(wx.Frame):
         else:
             event.Skip()
 
-
     def open_file(self):
         """Open the contents of a file into a new FlatNotebook page."""
 
@@ -491,12 +465,12 @@ class TmpNote(wx.Frame):
             self.notebook_visible_toggle_action()
 
         dlg = wx.FileDialog(
-                parent = self,
-                message = 'Select a file to open.',
-                defaultDir = os.getcwd(),
-                defaultFile = 'tmpNote.txtmp',
-                wildcard = 'All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
-                style = wx.OPEN|wx.CHANGE_DIR|wx.MULTIPLE
+            parent = self,
+            message = 'Select a file to open.',
+            defaultDir = os.getcwd(),
+            defaultFile = 'tmpNote.txtmp',
+            wildcard = 'All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
+            style = wx.OPEN|wx.CHANGE_DIR|wx.MULTIPLE
         )
         result = dlg.ShowModal()
         dlg.Destroy()
@@ -527,9 +501,9 @@ class TmpNote(wx.Frame):
                     page.datetime = str(datetime.datetime.now())
 
                     self.notebook.AddPage(
-                            page = page,
-                            text =  page.filename,
-                            select = True,
+                        page = page,
+                        text =  page.filename,
+                        select = True
                     )
 
                     page.SetSavePoint()
@@ -538,34 +512,33 @@ class TmpNote(wx.Frame):
                     self.statusbar.SetStatusText(filename, 1)
                 except IOError, error:
                     error_dlg = wx.MessageDialog(
-                            parent = self,
-                            message = 'Error trying to open ' + filename + '.\n\n' + str(error),
-                            caption = 'Error',
-                            style = wx.ICON_EXCLAMATION
+                        parent = self,
+                        message = 'Error trying to open ' + filename + '.\n\n' + str(error),
+                        caption = 'Error',
+                        style = wx.ICON_EXCLAMATION
                     )
                     error_dlg.ShowModal()
                     error_dlg.Destroy()
                 except UnicodeDecodeError, error:
                     error_dlg = wx.MessageDialog(
-                            parent = self,
-                            message = 'Error trying to open ' + filename + '.\n\n' + str(error),
-                            caption = 'Error',
-                            style = wx.ICON_EXCLAMATION
+                        parent = self,
+                        message = 'Error trying to open ' + filename + '.\n\n' + str(error),
+                        caption = 'Error',
+                        style = wx.ICON_EXCLAMATION
                     )
                     error_dlg.ShowModal()
                     error_dlg.Destroy()
                 except:
                     error_dlg = wx.MessageDialog(
-                            parent = self,
-                            message = 'Error trying to open ' + filename + '.\n\n',
-                            caption = 'Error',
-                            style = wx.ICON_EXCLAMATION
+                        parent = self,
+                        message = 'Error trying to open ' + filename + '.\n\n',
+                        caption = 'Error',
+                        style = wx.ICON_EXCLAMATION
                     )
                     error_dlg.ShowModal()
                     error_dlg.Destroy()
         else:
             self.statusbar.SetStatusText('The file was not opened.', 0)
-
 
     def save_file_event(self, event):
         """Event requesting to save a file, or save as."""
@@ -583,7 +556,6 @@ class TmpNote(wx.Frame):
             self.save_file_as()
         else:
             event.Skip()
-
 
     def save_file(self):
         """Save the selected page text to file."""
@@ -607,25 +579,24 @@ class TmpNote(wx.Frame):
                 self.statusbar.SetStatusText(page.filename, 1)
             except IOError, error:
                 error_dlg = wx.MessageDialog(
-                        parent = self,
-                        message = 'Error trying to save ' + page.filename + '.\n\n' + str(error),
-                        caption = 'Error',
-                        style = wx.ICON_EXCLAMATION
+                    parent = self,
+                    message = 'Error trying to save ' + page.filename + '.\n\n' + str(error),
+                    caption = 'Error',
+                    style = wx.ICON_EXCLAMATION
                 )
                 error_dlg.ShowModal()
                 error_dlg.Destroy()
                 self.statusbar.SetStatusText('There was an error saving the file.', 0)
             except:
                 error_dlg = wx.MessageDialog(
-                        parent = self,
-                        message = 'Error trying to save ' + page.filename + '.\n\n',
-                        caption = 'Error',
-                        style = wx.ICON_EXCLAMATION
+                    parent = self,
+                    message = 'Error trying to save ' + page.filename + '.\n\n',
+                    caption = 'Error',
+                    style = wx.ICON_EXCLAMATION
                 )
                 error_dlg.ShowModal()
                 error_dlg.Destroy()
                 self.statusbar.SetStatusText('There was an error saving the file.', 0)
-
 
     def save_file_as(self):
         """Save the selected page text to file, using Save As."""
@@ -636,12 +607,12 @@ class TmpNote(wx.Frame):
         page = self.notebook.GetCurrentPage()
 
         dlg = wx.FileDialog(
-                parent = self,
-                message = 'Select a file to save.',
-                defaultDir = os.getcwd(),
-                defaultFile = '',
-                wildcard = 'All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
-                style = wx.SAVE|wx.OVERWRITE_PROMPT
+            parent = self,
+            message = 'Select a file to save.',
+            defaultDir = os.getcwd(),
+            defaultFile = '',
+            wildcard = 'All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
+            style = wx.SAVE|wx.OVERWRITE_PROMPT
         )
         result = dlg.ShowModal()
         path = dlg.GetPath()
@@ -665,27 +636,26 @@ class TmpNote(wx.Frame):
                 )
             except IOError, error:
                 error_dlg = wx.MessageDialog(
-                        parent = self,
-                        message = 'Error trying to save '+ page.filename + '.\n\n' + str(error),
-                        caption = 'Error',
-                        style = wx.ICON_EXCLAMATION
+                    parent = self,
+                    message = 'Error trying to save '+ page.filename + '.\n\n' + str(error),
+                    caption = 'Error',
+                    style = wx.ICON_EXCLAMATION
                 )
                 error_dlg.ShowModal()
                 error_dlg.Destroy()
                 self.statusbar.SetStatusText('There was an error saving the file.', 0)
             except:
                 error_dlg = wx.MessageDialog(
-                        parent = self,
-                        message = 'Error trying to save '+ page.filename + '.\n\n',
-                        caption = 'Error',
-                        style = wx.ICON_EXCLAMATION
+                    parent = self,
+                    message = 'Error trying to save '+ page.filename + '.\n\n',
+                    caption = 'Error',
+                    style = wx.ICON_EXCLAMATION
                 )
                 error_dlg.ShowModal()
                 error_dlg.Destroy()
                 self.statusbar.SetStatusText('There was an error saving the file.', 0)
         else:
             self.statusbar.SetStatusText('The file was not saved.', 0)
-
 
     def close_file_event(self, event):
         """Event requesting to close a file."""
@@ -704,7 +674,6 @@ class TmpNote(wx.Frame):
             self.notebook.DeletePage(self.notebook.GetSelection())
         else:
             event.Skip()
-
 
     def closing_file_event(self, event):
         """This event is triggered when any FlatNotebook page is deleted.
@@ -741,7 +710,6 @@ class TmpNote(wx.Frame):
                 self.pages.pop(self.pages.index(page))
                 self.statusbar.SetStatusText(filename + ' was closed.', 0)
 
-
     def close_all_event(self, event):
         """Event requesting to close all files."""
 
@@ -756,7 +724,6 @@ class TmpNote(wx.Frame):
             self.close_all_action()
         else:
             event.Skip()
-
 
     def close_all_action(self):
         """Delete all FlatNotebook pages, gracefully, one page at a time."""
@@ -779,7 +746,6 @@ class TmpNote(wx.Frame):
                 break
         return ok_to_continue
 
-
     def cut_copy_paste_del_sel_event(self, event):
         """Event requesting cut, copy, paste, delete, or select all text."""
 
@@ -787,7 +753,6 @@ class TmpNote(wx.Frame):
             self.cut_copy_paste_del_sel_action(event)
         else:
             event.Skip()
-
 
     def cut_copy_paste_del_sel_action(self, event):
         """Cut, copy, paste, delete, or select all text."""
@@ -810,7 +775,6 @@ class TmpNote(wx.Frame):
         else:
             event.Skip()
 
-
 #    def undo_redo_event(self, event):
 #        """Undo and redo actions."""
 #        # Take orders from the proper source events only.
@@ -821,14 +785,12 @@ class TmpNote(wx.Frame):
 #        else:
 #            event.Skip()
 
-
     def about_event(self, event):
         """Event requesting to display information about the application."""
         if event.GetId() == wx.ID_ABOUT:
             self.about()
         else:
             event.Skip()
-
 
     def about(self):
         """Display information about the tmpNote application in a page."""
@@ -864,13 +826,12 @@ class TmpNote(wx.Frame):
         page.datetime = str(datetime.datetime.now())
 
         self.notebook.AddPage(
-                page = page,
-                text = 'About tmpNote',
-                select = True,
+            page = page,
+            text = 'About tmpNote',
+            select = True
         )
 
         page.SetSavePoint()
-
 
     def visit_website_event(self, event):
         """Visit the tmpNote website."""
@@ -880,30 +841,28 @@ class TmpNote(wx.Frame):
         else:
             event.Skip()
 
-
     def notify_ok(self, parent, message, caption):
         """Notify the operator about something."""
         
         dialog = wx.MessageDialog(
-                parent = parent,
-                message = message,
-                caption = caption,
-                style = wx.ICON_EXCLAMATION|wx.OK,
-                pos = wx.DefaultPosition
+            parent = parent,
+            message = message,
+            caption = caption,
+            style = wx.ICON_EXCLAMATION|wx.OK,
+            pos = wx.DefaultPosition
         )
         result = dialog.ShowModal()
         dialog.Destroy()
-
 
     def ask_yes_no(self, parent, message, caption):
         """Ask the operator a yes/no question. Return True for yes, False for no."""
         
         dialog = wx.MessageDialog(
-                parent = parent,
-                message = message,
-                caption = caption,
-                style = wx.ICON_QUESTION|wx.YES_NO|wx.NO_DEFAULT,
-                pos = wx.DefaultPosition
+            parent = parent,
+            message = message,
+            caption = caption,
+            style = wx.ICON_QUESTION|wx.YES_NO|wx.NO_DEFAULT,
+            pos = wx.DefaultPosition
         )
         result = dialog.ShowModal()
         dialog.Destroy()
@@ -913,7 +872,6 @@ class TmpNote(wx.Frame):
         else:
             return False
 
-
     def destroyer_event(self, event):
         """Event requesting to destroy the application."""
 
@@ -921,7 +879,6 @@ class TmpNote(wx.Frame):
             self.destroyer_action()
         else:
             event.Skip()
-
 
     def destroyer_action(self):
         """Quit\Close\Destroy the application."""
@@ -938,7 +895,6 @@ class TmpNote(wx.Frame):
                 self.statusbar.SetStatusText('Open files were not closed. Quit canceled', 0)
         else:
             self.statusbar.SetStatusText('Quit canceled.', 0)
-
 
 
 # +-------------------------------------------------------------------------+
