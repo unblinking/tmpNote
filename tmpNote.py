@@ -445,9 +445,10 @@ class TmpNote(wx.Frame):
         dlg.Destroy()
         
         if result == wx.ID_OK:
-            path = dlg.GetPath()
-            filename_list = dlg.GetFilenames()
-            for filename in filename_list:
+            paths = dlg.GetPaths()
+            filenames = dlg.GetFilenames()
+            for index, filename in enumerate(filenames):
+                path = paths[index]
                 try:
                     f = open(path, 'r')
                     text = f.read()
@@ -575,11 +576,16 @@ class TmpNote(wx.Frame):
 
         page = self.notebook.GetCurrentPage()
 
+        if page.path == '':
+            default_file = ''
+        else:
+            default_file = page.filename
+
         dlg = wx.FileDialog(
             parent = self,
             message = 'Select a file to save.',
             defaultDir = os.getcwd(),
-            defaultFile = '',
+            defaultFile = default_file,
             wildcard = 'All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
             style = wx.SAVE|wx.OVERWRITE_PROMPT
         )
@@ -668,8 +674,9 @@ class TmpNote(wx.Frame):
         if discard_page_ok == True:
             self.pages.pop(self.pages.index(page))
             self.statusbar.SetStatusText('{0} was closed.'.format(filename), 0)
+            self.statusbar.SetStatusText('', 1)
         else:
-            self.save_file()
+            self.save_file_as()
             # After attempting to save we check for unsaved modifications again.
             # If they exist, it indicates that the save failed. Veto the event.
             if page.GetModify() == True:
@@ -678,6 +685,7 @@ class TmpNote(wx.Frame):
             else:
                 self.pages.pop(self.pages.index(page))
                 self.statusbar.SetStatusText('{0} was closed.'.format(filename), 0)
+                self.statusbar.SetStatusText('', 1)
 
     def close_all_event(self, event):
         """Event requesting to close all files."""
