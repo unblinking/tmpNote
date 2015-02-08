@@ -419,6 +419,8 @@ class TmpNote(wx.Frame):
             select = True
         )
 
+        page.SetFocus()
+
     def open_file_event(self, event):
         """Event requesting to open a file."""
 
@@ -476,6 +478,7 @@ class TmpNote(wx.Frame):
                         select = True
                     )
 
+                    page.SetFocus()
                     page.SetSavePoint()
 
                     self.statusbar.SetStatusText('You opened {0}'.format(filename), 0)
@@ -804,6 +807,7 @@ class TmpNote(wx.Frame):
             select = True
         )
 
+        page.SetFocus()
         page.SetSavePoint()
 
     def visit_website_event(self, event):
