@@ -42,13 +42,18 @@ class FlatNotebook(fnb.FlatNotebook):
             self,
             parent = parent,
             id = wx.ID_ANY,
-            agwStyle = fnb.FNB_NO_TAB_FOCUS|fnb.FNB_X_ON_TAB
+            agwStyle = fnb.FNB_NO_TAB_FOCUS|fnb.FNB_X_ON_TAB|fnb.FNB_NAV_BUTTONS_WHEN_NEEDED|fnb.FNB_HIDE_ON_SINGLE_TAB|fnb.FNB_RIBBON_TABS
         )
 
-        self.SetActiveTabColour((34,34,34))
-        self.SetActiveTabTextColour((200,200,200))
-        self.SetNonActiveTabTextColour((100,100,100))
-        self.SetTabAreaColour((51,51,51))
+        self.SetTabAreaColour((100,100,100))
+        # Setting the active tab color was difficult for ribbon style tabs
+        # FlatNotebook.py line 3817 was using LightColour(pc._tabAreaColour,60)
+        # This gave a brighter version of the tab area color by a percentage of 60
+        # I wanted to control that color directly so I changed that to use pc._activeTabColour
+        # Now I can use SetActiveTabColour() with the ribbon style tabs
+        self.SetActiveTabColour((200,200,200))
+        self.SetActiveTabTextColour((0,0,0))
+        self.SetNonActiveTabTextColour((0,0,0))
 
         self.right_click_menu()
         self.custom_page()
@@ -73,7 +78,7 @@ class FlatNotebook(fnb.FlatNotebook):
         """A page to display when all FlatNotebook page tabs are closed."""
 
         panel = wx.Panel(self)
-        font = wx.Font(10, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
+        font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
         panel.SetFont(font)
         panel.SetBackgroundColour((34,34,34))
         panel.SetForegroundColour((255,255,255))
@@ -96,7 +101,7 @@ class TxtCtrl(stc.StyledTextCtrl):
         """Put the style in StyledTextCtrl."""
 
         # Using generic wx.Font for cross platform compatibility
-        font = wx.Font(10, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
+        font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
         self.StyleSetFont(stc.STC_STYLE_DEFAULT, font) 
 
         self.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255,255,255))
@@ -788,7 +793,7 @@ class TmpNote(wx.Frame):
         a8 = '  tmpNote      /              Another text editor.'
 
         asciiart = '{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n{7}\n\n\n\n'.format(a1,a2,a3,a4,a5,a6,a7,a8)
-        info = '  Version {0}\n  License {1}\n  {3}'.format(__version__, __license__, __copyright__)
+        info = '  Version {0}\n  License {1}\n  {2}'.format(__version__, __license__, __copyright__)
         text = '{0}{1}'.format(asciiart, info)
 
         readonly = True
