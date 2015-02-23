@@ -19,6 +19,7 @@
 import wx
 import wx.lib.agw.flatnotebook as fnb
 import wx.stc as stc
+import keyword
 import os
 import datetime
 import webbrowser
@@ -49,7 +50,8 @@ class FlatNotebook(fnb.FlatNotebook):
         # Setting the active tab color was difficult for ribbon style tabs
         # FlatNotebook.py line 3817 was using LightColour(pc._tabAreaColour,60)
         # This gave a brighter version of the tab area color by a percentage of 60
-        # I wanted to control that color directly so I changed that to use pc._activeTabColour
+        # I wanted to set active tab color independently
+        # I changed it to pc._activeTabColour
         # Now I can use SetActiveTabColour() with the ribbon style tabs
         self.SetActiveTabColour((200,200,200))
         self.SetActiveTabTextColour((0,0,0))
@@ -95,38 +97,93 @@ class TxtCtrl(stc.StyledTextCtrl):
         stc.StyledTextCtrl.__init__(self, parent, wx.ID_ANY)
         self.SetTextRaw(text)
         self.SetReadOnly(readonly) # bool
-        self.set_styles()
+        self.Bind(stc.EVT_STC_MARGINCLICK, self.margin_click)
 
-    def set_styles(self):
-        """Put the style in StyledTextCtrl."""
+    # The following methods of margin_click, fold_all, and expand, are
+    # copied from the demo. I haven't done anything special here.
 
-        # Using generic wx.Font for cross platform compatibility
-        font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
-        self.StyleSetFont(stc.STC_STYLE_DEFAULT, font) 
+    def margin_click(self, event):
+        """Take proper action when a margin is clicked by the operator."""
 
-        self.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255,255,255))
-        self.StyleSetBackground(stc.STC_STYLE_DEFAULT, (34,34,34))
-        self.SetSelForeground(True, (255,255,255))
-        self.SetSelBackground(True, (68,68,68))
-        self.SetCaretForeground((0,255,0))
-        self.SetUseTabs(0)
-        self.SetTabWidth(4)
+        # Action for the folding symbols margin.
+        if event.GetMargin() == 2:
+            if event.GetShift() and event.GetControl():
+                self.fold_all()
+            else:
+                lineClicked = self.LineFromPosition(event.GetPosition())
+                if self.GetFoldLevel(lineClicked) and stc.STC_FOLDLEVELHEADERFLAG:
+                    if event.GetShift():
+                        self.SetFoldExpanded(lineClicked, True)
+                        self.expand(lineClicked, True, True, 1)
+                    elif event.GetControl():
+                        if self.GetFoldExpanded(lineClicked):
+                            self.SetFoldExpanded(lineClicked, False)
+                            self.expand(lineClicked, False, True, 0)
+                        else:
+                            self.SetFoldExpanded(lineClicked, True)
+                            self.expand(lineClicked, True, True, 100)
+                    else:
+                        self.ToggleFold(lineClicked)
+        else:
+            event.Skip()
 
-        # http://www.scintilla.org/ScintillaDoc.html#Margins
-        self.SetMarginLeft(6) # Text area left margin.
-        self.SetMarginWidth(0, 30) # Line numbers margin.
-        self.SetMarginWidth(1, 0) # Non-folding symbols margin.
-        self.SetMarginWidth(2, 0) # Folding symbols margin.
+    def fold_all(self):
+        """Fold or unfold all folding symbols."""
 
-        # Reboot the styles after having just set the default styles.
-        self.StyleClearAll()
-        # After this we can set non-default styles.
+        lineCount = self.GetLineCount()
+        expanding = True
+        # find out if folding or unfolding
+        for lineNum in range(lineCount):
+            if self.GetFoldLevel(lineNum) &\
+                    stc.STC_FOLDLEVELHEADERFLAG:
+                expanding = not self.GetFoldExpanded(lineNum)
+                break;
+        lineNum = 0
+        while lineNum < lineCount:
+            level = self.GetFoldLevel(lineNum)
+            if level & stc.STC_FOLDLEVELHEADERFLAG and (level & stc.STC_FOLDLEVELNUMBERMASK) == stc.STC_FOLDLEVELBASE:
+                if expanding:
+                    self.SetFoldExpanded(lineNum, True)
+                    lineNum = self.expand(lineNum, True)
+                    lineNum = lineNum - 1
+                else:
+                    lastChild = self.GetLastChild(lineNum, -1)
+                    self.SetFoldExpanded(lineNum, False)
+                    if lastChild > lineNum:
+                        self.HideLines(lineNum+1, lastChild)
+            lineNum = lineNum + 1
 
-        self.StyleSetForeground(wx.stc.STC_STYLE_LINENUMBER, (100,100,100))
-        self.StyleSetBackground(wx.stc.STC_STYLE_LINENUMBER, (51,51,51))
+    def expand(self, line, doexpand, force=False, visLevels=0, level=-1):
+        """Unfold folding symbols."""
 
-        # Turn on word wrap by default.
-        self.SetWrapMode(stc.STC_WRAP_WORD)
+        lastChild = self.GetLastChild(line, level)
+        line = line + 1
+        while line <= lastChild:
+            if force:
+                if visLevels > 0:
+                    self.ShowLines(line, line)
+                else:
+                    self.HideLines(line, line)
+            else:
+                if doexpand:
+                    self.ShowLines(line, line)
+            if level == -1:
+                level = self.GetFoldLevel(line)
+            if level & stc.STC_FOLDLEVELHEADERFLAG:
+                if force:
+                    if visLevels > 1:
+                        self.SetFoldExpanded(line, True)
+                    else:
+                        self.SetFoldExpanded(line, False)
+                    line = self.expand(line, doexpand, force, visLevels-1)
+                else:
+                    if doexpand and self.GetFoldExpanded(line):
+                        line = self.expand(line, True, force, visLevels-1)
+                    else:
+                        line = self.expand(line, False, force, visLevels-1)
+            else:
+                line = line + 1;
+        return line
 
 
 class TmpNote(wx.Frame): 
@@ -140,7 +197,7 @@ class TmpNote(wx.Frame):
             parent = parent,
             id = wx.ID_ANY,
             title = ' tmpNote ',
-            size = (610, 400),
+            size = (600, 400),
             style = wx.DEFAULT_FRAME_STYLE
         )
 
@@ -211,6 +268,7 @@ class TmpNote(wx.Frame):
         self.Bind(wx.EVT_MENU, self.close_file_event, id=wx.ID_CLOSE)
         filemenu.Append(wx.ID_CLOSE_ALL, 'Close All Files', 'Close all open files.')
         self.Bind(wx.EVT_MENU, self.close_all_event, id=wx.ID_CLOSE_ALL)
+        # Print was removed for now until I can find a way to print with cross platform compatibility
         # filemenu.AppendSeparator()
         # filemenu.Append(wx.ID_PRINT, '&Print', 'Print the current file.')
         # self.Bind(wx.EVT_MENU, None, id=wx.ID_PRINT)
@@ -220,11 +278,11 @@ class TmpNote(wx.Frame):
 
         editmenu = wx.Menu()
         menubar.Append(editmenu, '&Edit')
-        # editmenu.Append(wx.ID_UNDO, 'Undo', 'Undo an action.')
-        # self.Bind(wx.EVT_MENU, self.undo_redo_event, id=wx.ID_UNDO)
-        # editmenu.Append(wx.ID_REDO, 'Redo', 'Redo an action.')
-        # self.Bind(wx.EVT_MENU, self.undo_redo_event, id=wx.ID_REDO)
-        # editmenu.AppendSeparator()
+        editmenu.Append(wx.ID_UNDO, 'Undo', 'Undo an action.')
+        self.Bind(wx.EVT_MENU, self.undo_redo_event, id=wx.ID_UNDO)
+        editmenu.Append(wx.ID_REDO, 'Redo', 'Redo an action.')
+        self.Bind(wx.EVT_MENU, self.undo_redo_event, id=wx.ID_REDO)
+        editmenu.AppendSeparator()
         editmenu.Append(wx.ID_CUT, 'Cut\tCtrl+X', 'Cut selection from file.')
         self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_CUT)
         editmenu.Append(wx.ID_COPY, '&Copy\tCtrl+C', 'Copy selection from file.')
@@ -262,12 +320,16 @@ class TmpNote(wx.Frame):
         self.line_numbers_option = self.viewmenu.Append(403, '&Line Numbers', 'Display line numbers in the left margin.', kind=wx.ITEM_CHECK)
         self.viewmenu.Check(403, True)
         self.Bind(wx.EVT_MENU, self.line_numbers_toggle_event, id=403)
-        # self.folding_symbols_option = self.viewmenu.Append(404, 'Folding Symbols', 'Display folding symbols in the left margin.', kind=wx.ITEM_CHECK)
-        # self.viewmenu.Check(404, True)
-        # self.Bind(wx.EVT_MENU, None, id=404)
+        self.folding_symbols_option = self.viewmenu.Append(404, 'Folding Symbols', 'Display folding symbols in the left margin.', kind=wx.ITEM_CHECK)
+        self.viewmenu.Check(404, False)
+        self.Bind(wx.EVT_MENU, self.folding_symbols_toggle_event, id=404)
         # self.nonfolding_symbols_option = self.viewmenu.Append(405, 'Non-Folding Symbols', 'Display non-folding symbols in the left margin.', kind=wx.ITEM_CHECK)
         # self.viewmenu.Check(405, True)
         # self.Bind(wx.EVT_MENU, None, id=405)
+        self.viewmenu.AppendSeparator()
+        self.python_lexer_option = self.viewmenu.Append(407, 'Python syntax', 'Syntax highlighting using the Python lexer.', kind=wx.ITEM_CHECK)
+        self.viewmenu.Check(407, False)
+        self.Bind(wx.EVT_MENU, self.syntax_python_event, id=407)
 
         # prefmenu = wx.Menu()
         # menubar.Append(prefmenu, 'Prefere&nces')
@@ -282,6 +344,120 @@ class TmpNote(wx.Frame):
         self.about_already = False
         helpmenu.Append(901, 'tmpNote Website', 'Visit the tmpNote website.')
         self.Bind(wx.EVT_MENU, self.visit_website_event, id=901)
+
+    def set_styles_default(self):
+        """Apply default styles to the current notebook page."""
+
+        page = self.notebook.GetCurrentPage()
+
+        # Set all style bytes to 0, remove all folding information.
+        page.ClearDocumentStyle()
+        # After this we can set base styles.
+
+        page.SetUseTabs(False)
+        page.SetUseAntiAliasing(True)
+        page.SetTabWidth(4)
+        page.SetViewWhiteSpace(False)
+        page.SetViewEOL(False)
+        # page.SetEOLMode(stc.STC_EOL_CRLF)
+
+        # Using generic wx.Font for cross platform compatibility.
+        font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
+        page.StyleSetFont(stc.STC_STYLE_DEFAULT, font) 
+
+        page.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255,255,255))
+        page.StyleSetBackground(stc.STC_STYLE_DEFAULT, (34,34,34))
+        page.SetSelForeground(True, (255,255,255))
+        page.SetSelBackground(True, (68,68,68))
+        page.SetCaretForeground((0,255,0))
+
+        # Reboot the styles after having just set the base styles.
+        page.StyleClearAll()
+        # After this we can set non-base styles.
+
+        page.StyleSetForeground(wx.stc.STC_STYLE_LINENUMBER, (151,151,151))
+        page.StyleSetBackground(wx.stc.STC_STYLE_LINENUMBER, (51,51,51))
+
+        # Use the NULL lexer for default styles.
+        page.SetLexer(stc.STC_LEX_NULL)
+        page.SetKeyWords(0, " ".join(keyword.kwlist))
+
+        # For folding symbols: http://www.yellowbrain.com/stc/folding.html
+        # Folding symbols margin settings.
+        page.SetFoldMarginColour(True, (41,41,41)) # Color 1 of checker pattern
+        page.SetFoldMarginHiColour(True, (51,51,51)) # Color 2 of checker pattern
+        page.SetMarginSensitive(2, False)
+
+    def set_styles_python(self):
+        """Apply Python styles to the current notebook page."""
+
+        page = self.notebook.GetCurrentPage()
+
+        # Set all style bytes to 0, remove all folding information.
+        page.ClearDocumentStyle()
+        # After this we can set base styles.
+
+        page.SetUseTabs(False)
+        page.SetUseAntiAliasing(True)
+        page.SetTabWidth(4)
+        page.SetViewWhiteSpace(False)
+        page.SetViewEOL(False)
+        # page.SetEOLMode(stc.STC_EOL_CRLF)
+
+        # Using generic wx.Font for cross platform compatibility.
+        font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
+        page.StyleSetFont(stc.STC_STYLE_DEFAULT, font) 
+
+        page.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255,255,255))
+        page.StyleSetBackground(stc.STC_STYLE_DEFAULT, (34,34,34))
+        page.SetSelForeground(True, (255,255,255))
+        page.SetSelBackground(True, (68,68,68))
+        page.SetCaretForeground((0,255,0))
+
+        # Reboot the styles after having just set the base styles.
+        page.StyleClearAll()
+        # After this we can set non-base styles.
+
+        page.StyleSetForeground(wx.stc.STC_STYLE_LINENUMBER, (151,151,151))
+        page.StyleSetBackground(wx.stc.STC_STYLE_LINENUMBER, (51,51,51))
+
+        # Use the PYTHON lexer for Python styles.
+        page.SetLexer(stc.STC_LEX_PYTHON)
+        page.SetKeyWords(0, " ".join(keyword.kwlist))
+
+        page.StyleSetSpec(stc.STC_P_COMMENTLINE, 'fore:#777777')
+        page.StyleSetSpec(stc.STC_P_NUMBER, 'fore:#11ff11')
+        page.StyleSetSpec(stc.STC_P_STRING, 'fore:#ff77ff')
+        page.StyleSetSpec(stc.STC_P_CHARACTER, 'fore:#f777f7')
+        page.StyleSetSpec(stc.STC_P_WORD, 'fore:#77ff77')
+        page.StyleSetSpec(stc.STC_P_TRIPLE, 'fore:#ff7777')
+        page.StyleSetSpec(stc.STC_P_TRIPLEDOUBLE, 'fore:#777777')
+        page.StyleSetSpec(stc.STC_P_CLASSNAME, 'fore:#ffffff')
+        page.StyleSetSpec(stc.STC_P_DEFNAME, 'fore:#7777ff')
+        page.StyleSetSpec(stc.STC_P_OPERATOR, '')
+        page.StyleSetSpec(stc.STC_P_IDENTIFIER, '')
+        page.StyleSetSpec(stc.STC_P_COMMENTBLOCK, 'fore:#777777')
+
+        # For folding symbols: http://www.yellowbrain.com/stc/folding.html
+        # Define markers and colors for folding symbols.
+        c1 = (51,51,51) # Color 1
+        c2 = (151,151,151) # Color 2
+        # These seven logical symbols make up the mask stc.STC_MASK_FOLDERS which we use a bit later.
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDEROPEN, stc.STC_MARK_BOXMINUS, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDER, stc.STC_MARK_BOXPLUS, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDERSUB, stc.STC_MARK_VLINE, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDERTAIL, stc.STC_MARK_LCORNERCURVE, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDEREND, stc.STC_MARK_BOXPLUSCONNECTED, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDEROPENMID, stc.STC_MARK_BOXMINUSCONNECTED, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDERMIDTAIL, stc.STC_MARK_TCORNERCURVE, c1, c2)
+        # Folding symbols margin settings.
+        page.SetFoldFlags(16) # 16 = Draw a solid line below folded markers
+        page.SetFoldMarginColour(True, (41,41,41)) # Color 1 of checker pattern
+        page.SetFoldMarginHiColour(True, (51,51,51)) # Color 2 of checker pattern
+        page.SetProperty("fold", "1")
+        page.SetMarginType(2, stc.STC_MARGIN_SYMBOL)
+        page.SetMarginMask(2, stc.STC_MASK_FOLDERS) # Use the seven logical symbols defined a bit earlier.
+        page.SetMarginSensitive(2, True)
 
     def status_bar(self):
         """Create a status bar."""
@@ -310,6 +486,37 @@ class TmpNote(wx.Frame):
 
         self.statusbar.Show(not self.statusbar.IsShown())
         self.SendSizeEvent()
+
+    def syntax_python_event(self, event):
+        """Event asking to toggle syntax highlighting for Python."""
+
+        if event.GetId() == 407:
+            self.syntax_python_action()
+        else:
+            event.Skip()
+
+    def syntax_python_action(self):
+        """Toggle syntax highlighting with the Python lexer."""
+
+        if self.notebook.IsShown() == False:
+            self.notebook_visible_toggle_action()
+
+        checkbox_orig_value = not self.viewmenu.IsChecked(407)
+        page = self.notebook.GetCurrentPage()
+        page_count = self.notebook.GetPageCount()
+
+        if page_count > 0:
+            if self.viewmenu.IsChecked(407):
+                self.set_styles_python()
+                page.python_syntax = True
+            else:
+                self.set_styles_default()
+                page.python_syntax = False
+        else:
+            message = 'You selected to toggle Python syntax highlighting. There is no file open to toggle syntax highlighting.'
+            caption = 'There is no file open to toggle syntax highlighting.'
+            self.notify_ok(self, message, caption)
+            self.viewmenu.Check(407, checkbox_orig_value)
 
     def notebook_visible_toggle_event(self, event):
         """Event asking to toggle the FlatNotebook visibility."""
@@ -357,6 +564,37 @@ class TmpNote(wx.Frame):
             self.notify_ok(self, message, caption)
             self.viewmenu.Check(403, checkbox_orig_value)
 
+    def folding_symbols_toggle_event(self, event):
+        """Event asking to toggle the folding symbols margin visibility."""
+
+        if event.GetId() == 404:
+            self.folding_symbols_toggle_action()
+        else:
+            event.Skip()
+
+    def folding_symbols_toggle_action(self):
+        """Toggle the folding symbols margin visibility."""
+
+        if self.notebook.IsShown() == False:
+            self.notebook_visible_toggle_action()
+
+        checkbox_orig_value = not self.viewmenu.IsChecked(404)
+        page_count = self.notebook.GetPageCount()
+
+        if page_count > 0:
+            page = self.notebook.GetCurrentPage()
+            if page.folding_symbols == True:
+                page.SetMarginWidth(2, 0)
+                page.folding_symbols = False
+            else:
+                page.SetMarginWidth(2, 30)
+                page.folding_symbols = True
+        else:
+            message = 'You selected to toggle folding symbols visibility. There is no file open to toggle folding symbols visibility.'
+            caption = 'There is no file open to toggle folding symbols visibility.'
+            self.notify_ok(self, message, caption)
+            self.viewmenu.Check(404, checkbox_orig_value)
+
     def word_wrap_toggle_event(self, event):
         """Event asking to toggle the word wrap option."""
 
@@ -394,6 +632,8 @@ class TmpNote(wx.Frame):
 
         self.viewmenu.Check(401, page.word_wrap)
         self.viewmenu.Check(403, page.line_numbers)
+        self.viewmenu.Check(404, page.folding_symbols)
+        self.viewmenu.Check(407, page.python_syntax)
 
     def new_file_event(self, event):
         """Event requesting to create a new file."""
@@ -412,11 +652,23 @@ class TmpNote(wx.Frame):
         page = TxtCtrl(self, text='', readonly=False)
         self.pages.append(page)
 
-        page.line_numbers = True
+        page.SetUndoCollection(True)
+        page.SetBufferedDraw(True)
+        page.SetWrapMode(stc.STC_WRAP_WORD)
+
+        page.python_syntax = False
+        page.folding_symbols = False
+        page.line_numbers = False
         page.word_wrap = True
         page.path = ''
         page.filename = 'Untitled'
         page.datetime = str(datetime.datetime.now())
+
+        # http://www.scintilla.org/ScintillaDoc.html#Margins
+        page.SetMarginLeft(6) # Text area left margin.
+        page.SetMarginWidth(0, 0) # Line numbers margin.
+        page.SetMarginWidth(1, 0) # Non-folding symbols margin.
+        page.SetMarginWidth(2, 0) # Folding symbols margin.
 
         self.notebook.AddPage(
             page = page,
@@ -424,6 +676,7 @@ class TmpNote(wx.Frame):
             select = True
         )
 
+        self.set_styles_default()
         page.SetFocus()
 
     def open_file_event(self, event):
@@ -471,11 +724,23 @@ class TmpNote(wx.Frame):
                     page = TxtCtrl(self, text=text, readonly=False)
                     self.pages.append(page)
 
-                    page.line_numbers = True
+                    page.SetUndoCollection(True)
+                    page.SetBufferedDraw(True)
+                    page.SetWrapMode(stc.STC_WRAP_WORD)
+
+                    page.python_syntax = False
+                    page.folding_symbols = False
+                    page.line_numbers = False
                     page.word_wrap = True
                     page.path = path
                     page.filename = filename
                     page.datetime = str(datetime.datetime.now())
+
+                    # http://www.scintilla.org/ScintillaDoc.html#Margins
+                    page.SetMarginLeft(6) # Text area left margin.
+                    page.SetMarginWidth(0, 0) # Line numbers margin.
+                    page.SetMarginWidth(1, 0) # Non-folding symbols margin.
+                    page.SetMarginWidth(2, 0) # Folding symbols margin.
 
                     self.notebook.AddPage(
                         page = page,
@@ -483,6 +748,7 @@ class TmpNote(wx.Frame):
                         select = True
                     )
 
+                    self.set_styles_default()
                     page.SetFocus()
                     page.SetSavePoint()
 
@@ -760,15 +1026,23 @@ class TmpNote(wx.Frame):
         else:
             event.Skip()
 
-#    def undo_redo_event(self, event):
-#        """Undo and redo actions."""
-#        # Take orders from the proper source events only.
-#        if event.GetId() == wx.ID_UNDO:
-#            event.Skip()
-#        if event.GetId() == wx.ID_REDO:
-#            event.Skip()
-#        else:
-#            event.Skip()
+    def undo_redo_event(self, event):
+        """Event requesting to undo or redo action in the undo history."""
+        if event.GetId() == wx.ID_UNDO or wx.ID_REDO:
+            self.undo_redo_action(event)
+        else:
+            event.Skip()
+
+    def undo_redo_action(self,event):
+        """Undo or redo action or actions in the undo history."""
+
+        page = self.notebook.GetCurrentPage()
+        if event.GetId() == wx.ID_UNDO:
+            page.Undo()
+        elif event.GetId() == wx.ID_REDO:
+            page.Redo()
+        else:
+            event.Skip()
 
     def about_event(self, event):
         """Event requesting to display information about the application."""
@@ -799,12 +1073,24 @@ class TmpNote(wx.Frame):
         readonly = True
         page = TxtCtrl(self, text, readonly)
         self.pages.append(page)
-        
-        page.line_numbers = True
-        page.word_wrap = True
+
+        page.SetUndoCollection(False)
+        page.SetBufferedDraw(True)
+        page.SetWrapMode(stc.STC_WRAP_NONE)
+
+        page.python_syntax = False
+        page.folding_symbols = False
+        page.line_numbers = False
+        page.word_wrap = False
         page.path = ''
         page.filename = 'About tmpNote'
         page.datetime = str(datetime.datetime.now())
+
+        # http://www.scintilla.org/ScintillaDoc.html#Margins
+        page.SetMarginLeft(6) # Text area left margin.
+        page.SetMarginWidth(0, 0) # Line numbers margin.
+        page.SetMarginWidth(1, 0) # Non-folding symbols margin.
+        page.SetMarginWidth(2, 0) # Folding symbols margin.
 
         self.notebook.AddPage(
             page = page,
@@ -812,6 +1098,7 @@ class TmpNote(wx.Frame):
             select = True
         )
 
+        self.set_styles_default()
         page.SetFocus()
         page.SetSavePoint()
 
@@ -880,7 +1167,7 @@ class TmpNote(wx.Frame):
 
 
 def main():
-    app = wx.App(redirect=False)
+    app = wx.App(redirect=True)
     TmpNote(None)
     app.MainLoop()
 
