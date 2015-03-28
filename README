@@ -1,5 +1,7 @@
-tmpNote Helpful Documentation. Also known as README
-
-+--------------------------------------------------
-
-tmpNote.  Another text editor.
+tmpNote is another text editor.
+Source code written in Python, using the Sublime Text editor.
+    - https://www.python.org/
+    - http://www.sublimetext.com/
+tmpNote is a combination of wxPython, AGW Flatnotebook, and StyledTextCtrl.
+    - http://www.wxpython.org/    - http://svn.wxwidgets.org/svn/wx/wxPython/3rdParty/AGW/agw/flatnotebook.py    - http://www.wxpython.org/docs/api/wx.lib.agw.flatnotebook-module.html    - http://www.wxpython.org/docs/api/wx.stc.StyledTextCtrl-class.html
+tmpNote started as a project to learn wxPython. If it can serve as an example for anyone else learning Python or wxPython that is great.If you are looking for a text editor to actually use I recommend Sublime Text.
