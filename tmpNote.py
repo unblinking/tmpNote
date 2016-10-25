@@ -763,17 +763,6 @@ class TmpNote(wx.Frame):
                     )
                     error_dlg.ShowModal()
                     error_dlg.Destroy()
-                ''' Combined with above IOError exception
-                except UnicodeDecodeError, error:
-                    error_dlg = wx.MessageDialog(
-                        parent = self,
-                        message = 'Error trying to open {0}.\n\n{1}'.format(filename, error),
-                        caption = 'Error',
-                        style = wx.ICON_EXCLAMATION
-                    )
-                    error_dlg.ShowModal()
-                    error_dlg.Destroy()
-                '''
                 except:
                     error_dlg = wx.MessageDialog(
                         parent = self,
