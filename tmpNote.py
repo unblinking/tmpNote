@@ -754,7 +754,7 @@ class TmpNote(wx.Frame):
 
                     self.statusbar.SetStatusText('You opened {0}'.format(filename), 0)
                     self.statusbar.SetStatusText(filename, 1)
-                except (IOError, UnicodeDecodeError) error:
+                except (IOError, UnicodeDecodeError) as error:
                     error_dlg = wx.MessageDialog(
                         parent = self,
                         message = 'Error trying to open {0}.\n\n{1}'.format(filename, error),
