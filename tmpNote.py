@@ -186,7 +186,7 @@ class TxtCtrl(stc.StyledTextCtrl):
         return line
 
 
-class TmpNote(wx.Frame): 
+class TmpNote(wx.Frame):
     """Use wx.Frame to create the graphical user interface."""
 
     def __init__(self, parent):
@@ -363,7 +363,7 @@ class TmpNote(wx.Frame):
 
         # Using generic wx.Font for cross platform compatibility.
         font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
-        page.StyleSetFont(stc.STC_STYLE_DEFAULT, font) 
+        page.StyleSetFont(stc.STC_STYLE_DEFAULT, font)
 
         page.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255,255,255))
         page.StyleSetBackground(stc.STC_STYLE_DEFAULT, (34,34,34))
@@ -406,7 +406,7 @@ class TmpNote(wx.Frame):
 
         # Using generic wx.Font for cross platform compatibility.
         font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
-        page.StyleSetFont(stc.STC_STYLE_DEFAULT, font) 
+        page.StyleSetFont(stc.STC_STYLE_DEFAULT, font)
 
         page.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255,255,255))
         page.StyleSetBackground(stc.STC_STYLE_DEFAULT, (34,34,34))
@@ -473,6 +473,12 @@ class TmpNote(wx.Frame):
         self.statusbar.SetStatusText('No open file.', 1)
         self.statusbar.Show()
 
+    def show_notebook_if_not_shown(self):
+        """Show the notebook if it is currently hidden."""
+
+        if self.notebook.IsShown() == False:
+            self.notebook_visible_toggle_action()
+
     def status_bar_toggle_event(self, event):
         """Event asking to toggle the status bar visibility."""
 
@@ -498,8 +504,7 @@ class TmpNote(wx.Frame):
     def syntax_python_action(self):
         """Toggle syntax highlighting with the Python lexer."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         checkbox_orig_value = not self.viewmenu.IsChecked(407)
         page = self.notebook.GetCurrentPage()
@@ -544,8 +549,7 @@ class TmpNote(wx.Frame):
     def line_numbers_toggle_action(self):
         """Toggle the line numbers margin visibility."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         checkbox_orig_value = not self.viewmenu.IsChecked(403)
         page_count = self.notebook.GetPageCount()
@@ -575,8 +579,7 @@ class TmpNote(wx.Frame):
     def folding_symbols_toggle_action(self):
         """Toggle the folding symbols margin visibility."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         checkbox_orig_value = not self.viewmenu.IsChecked(404)
         page_count = self.notebook.GetPageCount()
@@ -606,8 +609,7 @@ class TmpNote(wx.Frame):
     def word_wrap_toggle_action(self):
         """Toggle the word wrap option."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         checkbox_orig_value = not self.viewmenu.IsChecked(401)
         page_count = self.notebook.GetPageCount()
@@ -646,8 +648,7 @@ class TmpNote(wx.Frame):
     def new_file(self):
         """Create a new TextCtrl page and add it to the FlatNotebook."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         page = TxtCtrl(self, text='', readonly=False)
         self.pages.append(page)
@@ -690,8 +691,7 @@ class TmpNote(wx.Frame):
     def open_file(self):
         """Open the contents of a file into a new FlatNotebook page."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         dlg = wx.FileDialog(
             parent = self,
@@ -703,7 +703,7 @@ class TmpNote(wx.Frame):
         )
         result = dlg.ShowModal()
         dlg.Destroy()
-        
+
         if result == wx.ID_OK:
             paths = dlg.GetPaths()
             filenames = dlg.GetFilenames()
@@ -804,8 +804,7 @@ class TmpNote(wx.Frame):
     def save_file(self):
         """Save the selected page text to file."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         page = self.notebook.GetCurrentPage()
 
@@ -845,8 +844,7 @@ class TmpNote(wx.Frame):
     def save_file_as(self):
         """Save the selected page text to file, using Save As."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         page = self.notebook.GetCurrentPage()
 
@@ -935,8 +933,7 @@ class TmpNote(wx.Frame):
         page = self.notebook.GetCurrentPage()
         filename = page.filename
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         if page.GetModify() == True:
             message = 'Discard unsaved modifications?'
@@ -979,8 +976,7 @@ class TmpNote(wx.Frame):
     def close_all_action(self):
         """Delete all FlatNotebook pages, gracefully, one page at a time."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         page_count = self.notebook.GetPageCount()
         ok_to_continue = True
@@ -1008,8 +1004,7 @@ class TmpNote(wx.Frame):
     def cut_copy_paste_del_sel_action(self, event):
         """Cut, copy, paste, delete, or select all text."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         text = self.FindFocus()
         if text is not None:
@@ -1054,8 +1049,7 @@ class TmpNote(wx.Frame):
     def about(self):
         """Display information about the tmpNote application in a page."""
 
-        if self.notebook.IsShown() == False:
-            self.notebook_visible_toggle_action()
+        self.show_notebook_if_not_shown()
 
         a1 = '  ________________________________________________'
         a2 = '                          _     _                 '
@@ -1104,7 +1098,7 @@ class TmpNote(wx.Frame):
 
     def visit_website_event(self, event):
         """Visit the tmpNote website."""
-        
+
         if event.GetId() == 901:
             webbrowser.open_new_tab('http://tmpNote.com/')
         else:
@@ -1112,7 +1106,7 @@ class TmpNote(wx.Frame):
 
     def notify_ok(self, parent, message, caption):
         """Notify the operator about something."""
-        
+
         dialog = wx.MessageDialog(
             parent = parent,
             message = message,
@@ -1125,7 +1119,7 @@ class TmpNote(wx.Frame):
 
     def ask_yes_no(self, parent, message, caption):
         """Ask the operator a yes/no question. Return True for yes, False for no."""
-        
+
         dialog = wx.MessageDialog(
             parent = parent,
             message = message,
@@ -1135,7 +1129,7 @@ class TmpNote(wx.Frame):
         )
         result = dialog.ShowModal()
         dialog.Destroy()
-        
+
         if result == wx.ID_YES:
             return True
         else:
