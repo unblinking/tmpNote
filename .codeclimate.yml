@@ -3,6 +3,12 @@ engines:
     enabled: true
   fixme:
     enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+        python:
+          mass_threshold: 50
 
 ratings:
   paths:
