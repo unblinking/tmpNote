@@ -5,6 +5,8 @@ engines:
     enabled: true
   radon: 
     enabled: true
+  markdownlint:
+    enabled: true
   duplication:
     enabled: true
     config:
@@ -15,6 +17,7 @@ engines:
 ratings:
   paths:
   - "**.py"
+  - "**.md"
 
 exclude_paths:
 - .codeclimate.yml
