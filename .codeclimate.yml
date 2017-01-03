@@ -1,0 +1,12 @@
+engines:
+  pep8:
+    enabled: true
+  fixme:
+    enabled: true
+
+ratings:
+  paths:
+  - "**.py"
+
+exclude_paths:
+- .codeclimate.yml
