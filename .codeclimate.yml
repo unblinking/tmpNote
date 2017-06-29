@@ -13,11 +13,9 @@ engines:
       languages:
         python:
           mass_threshold: 50
-
 ratings:
   paths:
   - "**.py"
   - "**.md"
-
 exclude_paths:
-- .codeclimate.yml
+- LICENSE.md
