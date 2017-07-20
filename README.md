@@ -2,7 +2,7 @@
 
 ## Another text editor  
 
-<a href="https://codeclimate.com/github/nothingworksright/tmpNote"><img src="https://codeclimate.com/github/nothingworksright/tmpNote/badges/gpa.svg" /></a>  <a href="https://codeclimate.com/github/nothingworksright/tmpNote/coverage"><img src="https://codeclimate.com/github/nothingworksright/tmpNote/badges/coverage.svg" /></a>  <a href="https://codeclimate.com/github/nothingworksright/tmpNote"><img src="https://codeclimate.com/github/nothingworksright/tmpNote/badges/issue_count.svg" /></a>  
+[![Code Climate](https://codeclimate.com/github/nothingworksright/tmpNote/badges/gpa.svg)](https://codeclimate.com/github/nothingworksright/tmpNote) [![Issue Count](https://codeclimate.com/github/nothingworksright/tmpNote/badges/issue_count.svg)](https://codeclimate.com/github/nothingworksright/tmpNote)  
 
 ## About  
 
