@@ -1,3 +1,2 @@
-# 📓 tmpNote  
+# tmpNote  
 
-## Another text editor  
