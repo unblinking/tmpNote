@@ -1,10 +1,10 @@
-# tmpNote  
+# 📓 tmpNote  
 
 ## Another text editor  
 
 <a href="https://codeclimate.com/github/nothingworksright/tmpNote"><img src="https://codeclimate.com/github/nothingworksright/tmpNote/badges/gpa.svg" /></a>  <a href="https://codeclimate.com/github/nothingworksright/tmpNote/coverage"><img src="https://codeclimate.com/github/nothingworksright/tmpNote/badges/coverage.svg" /></a>  <a href="https://codeclimate.com/github/nothingworksright/tmpNote"><img src="https://codeclimate.com/github/nothingworksright/tmpNote/badges/issue_count.svg" /></a>  
 
-## Created using  
+## About  
 
 Source code written in [Python](https://www.python.org/), using the [Sublime Text](http://www.sublimetext.com/) editor.  
 
