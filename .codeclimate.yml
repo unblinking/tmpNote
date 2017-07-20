@@ -1,11 +1,11 @@
 engines:
-  pep8:
+  markdownlint:
     enabled: true
   fixme:
     enabled: true
-  radon: 
+  pep8:
     enabled: true
-  markdownlint:
+  radon:
     enabled: true
   duplication:
     enabled: true
