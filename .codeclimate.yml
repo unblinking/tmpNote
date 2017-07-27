@@ -1,21 +1,8 @@
 engines:
   markdownlint:
     enabled: true
-  fixme:
-    enabled: true
-  pep8:
-    enabled: true
-  radon:
-    enabled: true
-  duplication:
-    enabled: true
-    config:
-      languages:
-        python:
-          mass_threshold: 50
 ratings:
   paths:
-  - "**.py"
   - "**.md"
 exclude_paths:
 - "LICENSE.md"
