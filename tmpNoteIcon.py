@@ -18,4 +18,3 @@ gettmpNoteIconData = tmpNoteIcon.GetData
 gettmpNoteIconImage = tmpNoteIcon.GetImage
 gettmpNoteIconBitmap = tmpNoteIcon.GetBitmap
 gettmpNoteIconIcon = tmpNoteIcon.GetIcon
-
