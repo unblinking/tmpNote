@@ -92,7 +92,10 @@ class TxtCtrl(stc.StyledTextCtrl):
                 self.fold_all()
             else:
                 lineClicked = self.LineFromPosition(event.GetPosition())
-                if self.GetFoldLevel(lineClicked) and stc.STC_FOLDLEVELHEADERFLAG:
+                if (
+                    self.GetFoldLevel(lineClicked) and
+                    stc.STC_FOLDLEVELHEADERFLAG
+                ):
                     if event.GetShift():
                         self.SetFoldExpanded(lineClicked, True)
                         self.expand(lineClicked, True, True, 1)
@@ -122,7 +125,10 @@ class TxtCtrl(stc.StyledTextCtrl):
         lineNum = 0
         while lineNum < lineCount:
             level = self.GetFoldLevel(lineNum)
-            if level & stc.STC_FOLDLEVELHEADERFLAG and (level & stc.STC_FOLDLEVELNUMBERMASK) == stc.STC_FOLDLEVELBASE:
+            if (
+                level & stc.STC_FOLDLEVELHEADERFLAG and
+                (level & stc.STC_FOLDLEVELNUMBERMASK) == stc.STC_FOLDLEVELBASE
+            ):
                 if expanding:
                     self.SetFoldExpanded(lineNum, True)
                     lineNum = self.expand(lineNum, True)
@@ -173,7 +179,6 @@ class TmpNote(wx.Frame):
     def __init__(self, parent):
         """Define the initialization behavior of the wx.Frame."""
 
-        # Super is here for multiple inheritance in the future, but not used yet.
         super(TmpNote, self).__init__(
             parent=parent,
             id=wx.ID_ANY,
@@ -253,7 +258,8 @@ class TmpNote(wx.Frame):
         filemenu.Append(wx.ID_CLOSE_ALL, 'Close All Files',
                         'Close all open files.')
         self.Bind(wx.EVT_MENU, self.close_all_event, id=wx.ID_CLOSE_ALL)
-        # Print was removed for now until I can find a way to print with cross platform compatibility
+        # Print was removed for now until I can find a way to print with cross
+        # platform compatibility.
         # filemenu.AppendSeparator()
         # filemenu.Append(wx.ID_PRINT, '&Print', 'Print the current file.')
         # self.Bind(wx.EVT_MENU, None, id=wx.ID_PRINT)
@@ -275,7 +281,9 @@ class TmpNote(wx.Frame):
         self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_COPY)
         editmenu.Append(wx.ID_PASTE, '&Paste\tCtrl+V',
                         'Paste clipboard into file.')
-        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_PASTE)
+        self.Bind(
+            wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_PASTE
+        )
         editmenu.Append(wx.ID_DELETE, 'Delete', 'Delete the selected text.')
         self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event,
                   id=wx.ID_DELETE)
@@ -288,20 +296,32 @@ class TmpNote(wx.Frame):
         # menubar.Append(findmenu, 'F&ind')
         # findmenu.Append(wx.ID_FIND, '&Find\tCtrl+f', 'Find a string.')
         # self.Bind(wx.EVT_MENU, None, id=wx.ID_FIND)
-        # findmenu.Append(301, 'Find &Next\tCtrl+g', 'Find the next occurance of a string.')
+        # findmenu.Append(
+        #     301, 'Find &Next\tCtrl+g', 'Find the next occurance of a string.'
+        # )
         # self.Bind(wx.EVT_MENU, None, id=301)
-        # findmenu.Append(wx.ID_REPLACE, '&Replace\tCtrl+h', 'Replace a string.')
+        # findmenu.Append(
+        #     wx.ID_REPLACE, '&Replace\tCtrl+h', 'Replace a string.'
+        # )
         # self.Bind(wx.EVT_MENU, None, id=wx.ID_REPLACE)
 
         self.viewmenu = wx.Menu()
         menubar.Append(self.viewmenu, '&View')
         self.word_wrap_option = self.viewmenu.Append(
-            401, '&Word Wrap', 'Wrap lines at the text area width.', kind=wx.ITEM_CHECK)
+            401,
+            '&Word Wrap',
+            'Wrap lines at the text area width.',
+            kind=wx.ITEM_CHECK
+        )
         self.viewmenu.Check(401, True)
         self.Bind(wx.EVT_MENU, self.word_wrap_toggle_event, id=401)
         self.viewmenu.AppendSeparator()
         self.status_bar_option = self.viewmenu.Append(
-            402, '&Status Bar', 'Display the status bar at the bottom of the window.', kind=wx.ITEM_CHECK)
+            402,
+            '&Status Bar',
+            'Display the status bar at the bottom of the window.',
+            kind=wx.ITEM_CHECK
+        )
         self.viewmenu.Check(402, True)
         self.Bind(wx.EVT_MENU, self.status_bar_toggle_event, id=402)
         self.notebook_visible_option = self.viewmenu.Append(
@@ -310,19 +330,36 @@ class TmpNote(wx.Frame):
         self.Bind(wx.EVT_MENU, self.notebook_visible_toggle_event)
         self.viewmenu.AppendSeparator()
         self.line_numbers_option = self.viewmenu.Append(
-            403, '&Line Numbers', 'Display line numbers in the left margin.', kind=wx.ITEM_CHECK)
+            403,
+            '&Line Numbers',
+            'Display line numbers in the left margin.',
+            kind=wx.ITEM_CHECK
+        )
         self.viewmenu.Check(403, True)
         self.Bind(wx.EVT_MENU, self.line_numbers_toggle_event, id=403)
         self.folding_symbols_option = self.viewmenu.Append(
-            404, 'Folding Symbols', 'Display folding symbols in the left margin.', kind=wx.ITEM_CHECK)
+            404,
+            'Folding Symbols',
+            'Display folding symbols in the left margin.',
+            kind=wx.ITEM_CHECK
+        )
         self.viewmenu.Check(404, False)
         self.Bind(wx.EVT_MENU, self.folding_symbols_toggle_event, id=404)
-        # self.nonfolding_symbols_option = self.viewmenu.Append(405, 'Non-Folding Symbols', 'Display non-folding symbols in the left margin.', kind=wx.ITEM_CHECK)
+        # self.nonfolding_symbols_option = self.viewmenu.Append(
+        #     405,
+        #     'Non-Folding Symbols',
+        #     'Display non-folding symbols in the left margin.',
+        #     kind=wx.ITEM_CHECK
+        # )
         # self.viewmenu.Check(405, True)
         # self.Bind(wx.EVT_MENU, None, id=405)
         self.viewmenu.AppendSeparator()
         self.python_lexer_option = self.viewmenu.Append(
-            407, 'Python syntax', 'Syntax highlighting using the Python lexer.', kind=wx.ITEM_CHECK)
+            407,
+            'Python syntax',
+            'Syntax highlighting using the Python lexer.',
+            kind=wx.ITEM_CHECK
+        )
         self.viewmenu.Check(407, False)
         self.Bind(wx.EVT_MENU, self.syntax_python_event, id=407)
 
@@ -331,7 +368,11 @@ class TmpNote(wx.Frame):
 
         helpmenu = wx.Menu()
         menubar.Append(helpmenu, '&Help')
-        # helpmenu.Append(wx.ID_HELP, 'Helpful &Documentation', 'View the helpful documentation.')
+        # helpmenu.Append(
+        #     wx.ID_HELP,
+        #     'Helpful &Documentation',
+        #     'View the helpful documentation.'
+        # )
         # self.Bind(wx.EVT_MENU, None, id=wx.ID_HELP)
         # helpmenu.AppendSeparator()
         helpmenu.Append(wx.ID_ABOUT, '&About tmpNote', 'Learn about tmpNote')
@@ -437,7 +478,8 @@ class TmpNote(wx.Frame):
         # Define markers and colors for folding symbols.
         c1 = (51, 51, 51)  # Color 1
         c2 = (151, 151, 151)  # Color 2
-        # These seven logical symbols make up the mask stc.STC_MASK_FOLDERS which we use a bit later.
+        # These seven logical symbols make up the mask stc.STC_MASK_FOLDERS
+        # which we use a bit later.
         page.MarkerDefine(stc.STC_MARKNUM_FOLDEROPEN,
                           stc.STC_MARK_BOXMINUS, c1, c2)
         page.MarkerDefine(stc.STC_MARKNUM_FOLDER, stc.STC_MARK_BOXPLUS, c1, c2)
@@ -522,7 +564,8 @@ class TmpNote(wx.Frame):
                 self.set_styles_default()
                 page.python_syntax = False
         else:
-            message = 'You selected to toggle Python syntax highlighting. There is no file open to toggle syntax highlighting.'
+            message = 'You selected to toggle Python syntax highlighting. ' + \
+                'There is no file open to toggle syntax highlighting.'
             caption = 'There is no file open to toggle syntax highlighting.'
             self.notify_ok(self, message, caption)
             self.viewmenu.Check(407, checkbox_orig_value)
@@ -597,8 +640,10 @@ class TmpNote(wx.Frame):
                 page.SetMarginWidth(2, 30)
                 page.folding_symbols = True
         else:
-            message = 'You selected to toggle folding symbols visibility. There is no file open to toggle folding symbols visibility.'
-            caption = 'There is no file open to toggle folding symbols visibility.'
+            message = 'You selected to toggle folding symbols visibility. ' +\
+                'There is no file open to toggle folding symbols visibility.'
+            caption = 'There is no file open to toggle folding symbols ' +\
+                'visibility.'
             self.notify_ok(self, message, caption)
             self.viewmenu.Check(404, checkbox_orig_value)
 
@@ -623,7 +668,9 @@ class TmpNote(wx.Frame):
             page.SetWrapMode(not page.GetWrapMode())
             page.word_wrap = page.GetWrapMode()
         else:
-            message = 'You selected to toggle word wrap. There is no file open to toggle word wrap. Please open a files before selecting to toggle word wrap.'
+            message = 'You selected to toggle word wrap. There is no file ' +\
+                'open to toggle word wrap. Please open a files before' +\
+                'selecting to toggle word wrap.'
             caption = 'There is no file open to toggle word wrap.'
             self.notify_ok(self, message, caption)
             self.viewmenu.Check(401, checkbox_orig_value)
@@ -703,7 +750,8 @@ class TmpNote(wx.Frame):
             message='Select a file to open.',
             defaultDir=os.getcwd(),
             defaultFile='tmpNote.txtmp',
-            wildcard='All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
+            wildcard='All files (*.*)|*.*|tmpNote files (*.txtmp)|' +
+            '*.txtmp|Text files (*.txt)|*.txt',
             style=wx.FD_OPEN | wx.FD_CHANGE_DIR | wx.FD_MULTIPLE
         )
         result = dlg.ShowModal()
@@ -722,7 +770,11 @@ class TmpNote(wx.Frame):
                     # Lose the default untitled page if that is the only
                     # page and there are no unsaved modifications to it,
                     # and then reset the pages list.
-                    if (len(self.pages) == 1) and (self.pages[0].filename == 'Untitled') and (self.pages[0].GetModify() == False):
+                    if (
+                        (len(self.pages) == 1) and
+                        (self.pages[0].filename == 'Untitled') and
+                        (self.pages[0].GetModify() == False)
+                    ):
                         self.notebook.DeletePage(0)
                         self.pages = []
 
@@ -790,7 +842,8 @@ class TmpNote(wx.Frame):
 
         if (event.GetId() == wx.ID_SAVE or wx.ID_SAVEAS) and page_count == 0:
             self.statusbar.SetStatusText('There is no file open to save.', 0)
-            message = 'You selected to save a file or to save as. There is no file open to save.'
+            message = 'You selected to save a file or to save as.' + \
+                ' There is no file open to save.'
             caption = 'There is no file open to save.'
             self.notify_ok(self, message, caption)
         elif event.GetId() == wx.ID_SAVE and page_count > 0:
@@ -866,7 +919,8 @@ class TmpNote(wx.Frame):
             message='Select a file to save.',
             defaultDir=os.getcwd(),
             defaultFile=default_file,
-            wildcard='All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
+            wildcard='All files (*.*)|*.*|tmpNote files (*.txtmp)|' +
+            '*.txtmp|Text files (*.txt)|*.txt',
             style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
         )
         result = dlg.ShowModal()
@@ -923,7 +977,8 @@ class TmpNote(wx.Frame):
 
         if event.GetId() == wx.ID_CLOSE and page_count == 0:
             self.statusbar.SetStatusText('There is no file open to close.', 0)
-            message = 'You selected to close a file. There is no file open to close.'
+            message = 'You selected to close a file. There is no file' +\
+                'open to close.'
             caption = 'There is no file open to close.'
             self.notify_ok(self, message, caption)
         elif event.GetId() == wx.ID_CLOSE and page_count > 0:
@@ -980,7 +1035,8 @@ class TmpNote(wx.Frame):
         if event.GetId() == wx.ID_CLOSE_ALL and page_count == 0:
             self.statusbar.SetStatusText(
                 'There are no files open to close.', 0)
-            message = 'You selected to close all files. There are no files open to close.'
+            message = 'You selected to close all files. There are no files' +\
+                ' open to close.'
             caption = 'There are no files open to close.'
             self.notify_ok(self, message, caption)
         elif event.GetId() == wx.ID_CLOSE_ALL and page_count > 0:
@@ -1011,7 +1067,10 @@ class TmpNote(wx.Frame):
     def cut_copy_paste_del_sel_event(self, event):
         """Event requesting cut, copy, paste, delete, or select all text."""
 
-        if event.GetId() == wx.ID_CUT or wx.ID_COPY or wx.ID_PASTE or wx.ID_DELETE or wx.ID_SELECTALL:
+        if event.GetId() == (
+            wx.ID_CUT or wx.ID_COPY or wx.ID_PASTE or wx.ID_DELETE or
+            wx.ID_SELECTALL
+        ):
             self.cut_copy_paste_del_sel_action(event)
         else:
             event.Skip()
@@ -1135,7 +1194,7 @@ class TmpNote(wx.Frame):
         dialog.Destroy()
 
     def ask_yes_no(self, parent, message, caption):
-        """Ask the operator a yes/no question. Return True for yes, False for no."""
+        """Ask the operator a yes/no question. Return True or False."""
 
         dialog = wx.MessageDialog(
             parent=parent,
