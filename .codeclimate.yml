@@ -8,7 +8,7 @@ engines:
   radon:
     enabled: true
     config:
-      threshold: "C"
+      threshold: "D"
   duplication:
     enabled: true
     config:
