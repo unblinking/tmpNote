@@ -278,7 +278,11 @@ class TmpNote(wx.Frame):
         self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_CUT)
         editmenu.Append(wx.ID_COPY, '&Copy\tCtrl+C',
                         'Copy selection from file.')
-        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_COPY)
+        self.Bind(
+            wx.EVT_MENU,
+            self.cut_copy_paste_del_sel_event,
+            id=wx.ID_COPY
+        )
         editmenu.Append(wx.ID_PASTE, '&Paste\tCtrl+V',
                         'Paste clipboard into file.')
         self.Bind(
@@ -522,7 +526,7 @@ class TmpNote(wx.Frame):
     def show_notebook_if_not_shown(self):
         """Show the notebook if it is currently hidden."""
 
-        if self.notebook.IsShown() == False:
+        if self.notebook.IsShown() is False:
             self.notebook_visible_toggle_action()
 
     def status_bar_toggle_event(self, event):
@@ -603,14 +607,15 @@ class TmpNote(wx.Frame):
 
         if page_count > 0:
             page = self.notebook.GetCurrentPage()
-            if page.line_numbers == True:
+            if page.line_numbers is True:
                 page.SetMarginWidth(0, 0)
                 page.line_numbers = False
             else:
                 page.SetMarginWidth(0, 30)
                 page.line_numbers = True
         else:
-            message = 'You selected to toggle line number visibility. There is no file open to toggle line number visibility.'
+            message = 'You selected to toggle line number visibility.' +\
+                ' There is no file open to toggle line number visibility.'
             caption = 'There is no file open to toggle line number visibility.'
             self.notify_ok(self, message, caption)
             self.viewmenu.Check(403, checkbox_orig_value)
@@ -633,7 +638,7 @@ class TmpNote(wx.Frame):
 
         if page_count > 0:
             page = self.notebook.GetCurrentPage()
-            if page.folding_symbols == True:
+            if page.folding_symbols is True:
                 page.SetMarginWidth(2, 0)
                 page.folding_symbols = False
             else:
@@ -773,7 +778,7 @@ class TmpNote(wx.Frame):
                     if (
                         (len(self.pages) == 1) and
                         (self.pages[0].filename == 'Untitled') and
-                        (self.pages[0].GetModify() == False)
+                        (self.pages[0].GetModify() is False)
                     ):
                         self.notebook.DeletePage(0)
                         self.pages = []
@@ -1002,22 +1007,22 @@ class TmpNote(wx.Frame):
 
         self.show_notebook_if_not_shown()
 
-        if page.GetModify() == True:
+        if page.GetModify() is True:
             message = 'Discard unsaved modifications?'
             caption = 'Discard?'
             discard_page_ok = self.ask_yes_no(self, message, caption)
         else:
             discard_page_ok = True
 
-        if discard_page_ok == True:
+        if discard_page_ok is True:
             self.pages.pop(self.pages.index(page))
             self.statusbar.SetStatusText('{0} was closed.'.format(filename), 0)
             self.statusbar.SetStatusText('', 1)
         else:
             self.save_file_as()
-            # After attempting to save we check for unsaved modifications again.
+            # After attempting to save, check for unsaved modifications again.
             # If they exist, it indicates that the save failed. Veto the event.
-            if page.GetModify() == True:
+            if page.GetModify() is True:
                 event.Veto()
                 self.statusbar.SetStatusText(
                     '{0} was not closed.'.format(filename), 0)
@@ -1225,9 +1230,9 @@ class TmpNote(wx.Frame):
         self.statusbar.SetStatusText('You are quitting the application.', 0)
         message = 'Are you sure you want to quit?'
         caption = 'Are you sure?'
-        if self.ask_yes_no(self, message, caption) == True:
+        if self.ask_yes_no(self, message, caption) is True:
             self.statusbar.SetStatusText('You said yes to Quit.', 0)
-            if self.close_all_action() == True:
+            if self.close_all_action() is True:
                 # Daisy, Daisy / Give me your answer, do.
                 self.Destroy()
             else:
