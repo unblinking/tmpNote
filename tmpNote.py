@@ -17,7 +17,8 @@ __license__ = 'GPL'
 __version__ = '0.0.7'
 
 
-# Always use the latest SVN version of AGW at http://svn.wxwidgets.org/svn/wx/wxPython/3rdParty/AGW/
+# Always use the latest SVN version of AGW.
+# http://svn.wxwidgets.org/svn/wx/wxPython/3rdParty/AGW/
 class FlatNotebook(fnb.FlatNotebook):
     """Create a FlatNotebook."""
 
@@ -26,21 +27,21 @@ class FlatNotebook(fnb.FlatNotebook):
 
         fnb.FlatNotebook.__init__(
             self,
-            parent = parent,
-            id = wx.ID_ANY,
-            agwStyle = fnb.FNB_NO_TAB_FOCUS|fnb.FNB_X_ON_TAB|fnb.FNB_NAV_BUTTONS_WHEN_NEEDED|fnb.FNB_HIDE_ON_SINGLE_TAB|fnb.FNB_RIBBON_TABS
+            parent=parent,
+            id=wx.ID_ANY,
+            agwStyle=fnb.FNB_NO_TAB_FOCUS | fnb.FNB_X_ON_TAB | fnb.FNB_NAV_BUTTONS_WHEN_NEEDED | fnb.FNB_HIDE_ON_SINGLE_TAB | fnb.FNB_RIBBON_TABS
         )
 
-        self.SetTabAreaColour((100,100,100))
+        self.SetTabAreaColour((100, 100, 100))
         # Setting the active tab color was difficult for ribbon style tabs
         # FlatNotebook.py line 3817 was using LightColour(pc._tabAreaColour,60)
-        # This gave a brighter version of the tab area color by a percentage of 60
+        # This gave a brighter version of the tab area color by 60 percent.
         # I wanted to set active tab color independently
         # I changed it to pc._activeTabColour
         # Now I can use SetActiveTabColour() with the ribbon style tabs
-        self.SetActiveTabColour((200,200,200))
-        self.SetActiveTabTextColour((0,0,0))
-        self.SetNonActiveTabTextColour((0,0,0))
+        self.SetActiveTabColour((200, 200, 200))
+        self.SetActiveTabTextColour((0, 0, 0))
+        self.SetNonActiveTabTextColour((0, 0, 0))
 
         self.right_click_menu()
         self.custom_page()
@@ -67,8 +68,8 @@ class FlatNotebook(fnb.FlatNotebook):
         panel = wx.Panel(self)
         font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
         panel.SetFont(font)
-        panel.SetBackgroundColour((34,34,34))
-        panel.SetForegroundColour((255,255,255))
+        panel.SetBackgroundColour((34, 34, 34))
+        panel.SetForegroundColour((255, 255, 255))
         # wx.StaticText(panel, -1, '\n\n\nSomething here later?')
         self.SetCustomPage(panel)
 
@@ -80,8 +81,8 @@ class TxtCtrl(stc.StyledTextCtrl):
         """Define the initialization behavior of the StyledTextCtrl."""
 
         stc.StyledTextCtrl.__init__(self, parent, wx.ID_ANY)
-        self.SetTextRaw(text)
-        self.SetReadOnly(readonly) # bool
+        # self.SetTextRaw(text) # TODO: I commented this out to temporarily get rid of an error, need to fix that error.
+        self.SetReadOnly(readonly)  # bool
         self.Bind(stc.EVT_STC_MARGINCLICK, self.margin_click)
 
     # The following methods of margin_click, fold_all, and expand, are
@@ -122,7 +123,7 @@ class TxtCtrl(stc.StyledTextCtrl):
             if self.GetFoldLevel(lineNum) &\
                     stc.STC_FOLDLEVELHEADERFLAG:
                 expanding = not self.GetFoldExpanded(lineNum)
-                break;
+                break
         lineNum = 0
         while lineNum < lineCount:
             level = self.GetFoldLevel(lineNum)
@@ -135,7 +136,7 @@ class TxtCtrl(stc.StyledTextCtrl):
                     lastChild = self.GetLastChild(lineNum, -1)
                     self.SetFoldExpanded(lineNum, False)
                     if lastChild > lineNum:
-                        self.HideLines(lineNum+1, lastChild)
+                        self.HideLines(lineNum + 1, lastChild)
             lineNum = lineNum + 1
 
     def expand(self, line, doexpand, force=False, visLevels=0, level=-1):
@@ -160,14 +161,14 @@ class TxtCtrl(stc.StyledTextCtrl):
                         self.SetFoldExpanded(line, True)
                     else:
                         self.SetFoldExpanded(line, False)
-                    line = self.expand(line, doexpand, force, visLevels-1)
+                    line = self.expand(line, doexpand, force, visLevels - 1)
                 else:
                     if doexpand and self.GetFoldExpanded(line):
-                        line = self.expand(line, True, force, visLevels-1)
+                        line = self.expand(line, True, force, visLevels - 1)
                     else:
-                        line = self.expand(line, False, force, visLevels-1)
+                        line = self.expand(line, False, force, visLevels - 1)
             else:
-                line = line + 1;
+                line = line + 1
         return line
 
 
@@ -179,11 +180,11 @@ class TmpNote(wx.Frame):
 
         # Super is here for multiple inheritance in the future, but not used yet.
         super(TmpNote, self).__init__(
-            parent = parent,
-            id = wx.ID_ANY,
-            title = ' tmpNote ',
-            size = (600, 400),
-            style = wx.DEFAULT_FRAME_STYLE
+            parent=parent,
+            id=wx.ID_ANY,
+            title=' tmpNote ',
+            size=(600, 400),
+            style=wx.DEFAULT_FRAME_STYLE
         )
 
         user_interface = self.ui()
@@ -202,7 +203,7 @@ class TmpNote(wx.Frame):
         self.status_bar()
 
         panel = wx.Panel(self)
-        panel.SetBackgroundColour((34,34,34))
+        panel.SetBackgroundColour((34, 34, 34))
 
         # List to contain the FlatNotebook pages as they are created.
         # The objects in this list will be StyledTextCtrl objects.
@@ -212,7 +213,7 @@ class TmpNote(wx.Frame):
         first_page = self.new_file()
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.notebook, 1, wx.ALL|wx.EXPAND, 0)
+        sizer.Add(self.notebook, 1, wx.ALL | wx.EXPAND, 0)
 
         panel.SetSizerAndFit(sizer)
         panel.Layout()
@@ -243,15 +244,19 @@ class TmpNote(wx.Frame):
         menubar.Append(filemenu, '&File')
         filemenu.Append(wx.ID_NEW, '&New File', 'Begin a new file.')
         self.Bind(wx.EVT_MENU, self.new_file_event, id=wx.ID_NEW)
-        filemenu.Append(wx.ID_OPEN, '&Open File\tCtrl+O', 'Open an existing file.')
+        filemenu.Append(wx.ID_OPEN, '&Open File\tCtrl+O',
+                        'Open an existing file.')
         self.Bind(wx.EVT_MENU, self.open_file_event, id=wx.ID_OPEN)
-        filemenu.Append(wx.ID_SAVE, '&Save\tCtrl+S', 'Save using the current file name.')
+        filemenu.Append(wx.ID_SAVE, '&Save\tCtrl+S',
+                        'Save using the current file name.')
         self.Bind(wx.EVT_MENU, self.save_file_event, id=wx.ID_SAVE)
-        filemenu.Append(wx.ID_SAVEAS, 'Save &As', 'Save using a different file name.')
+        filemenu.Append(wx.ID_SAVEAS, 'Save &As',
+                        'Save using a different file name.')
         self.Bind(wx.EVT_MENU, self.save_file_event, id=wx.ID_SAVEAS)
         filemenu.Append(wx.ID_CLOSE, '&Close File', 'Close the current file.')
         self.Bind(wx.EVT_MENU, self.close_file_event, id=wx.ID_CLOSE)
-        filemenu.Append(wx.ID_CLOSE_ALL, 'Close All Files', 'Close all open files.')
+        filemenu.Append(wx.ID_CLOSE_ALL, 'Close All Files',
+                        'Close all open files.')
         self.Bind(wx.EVT_MENU, self.close_all_event, id=wx.ID_CLOSE_ALL)
         # Print was removed for now until I can find a way to print with cross platform compatibility
         # filemenu.AppendSeparator()
@@ -270,15 +275,19 @@ class TmpNote(wx.Frame):
         editmenu.AppendSeparator()
         editmenu.Append(wx.ID_CUT, 'Cut\tCtrl+X', 'Cut selection from file.')
         self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_CUT)
-        editmenu.Append(wx.ID_COPY, '&Copy\tCtrl+C', 'Copy selection from file.')
+        editmenu.Append(wx.ID_COPY, '&Copy\tCtrl+C',
+                        'Copy selection from file.')
         self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_COPY)
-        editmenu.Append(wx.ID_PASTE, '&Paste\tCtrl+V', 'Paste clipboard into file.')
+        editmenu.Append(wx.ID_PASTE, '&Paste\tCtrl+V',
+                        'Paste clipboard into file.')
         self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_PASTE)
         editmenu.Append(wx.ID_DELETE, 'Delete', 'Delete the selected text.')
-        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_DELETE)
+        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event,
+                  id=wx.ID_DELETE)
         editmenu.AppendSeparator()
         editmenu.Append(wx.ID_SELECTALL, 'Select All', 'Select all text.')
-        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_SELECTALL)
+        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event,
+                  id=wx.ID_SELECTALL)
 
         # findmenu = wx.Menu()
         # menubar.Append(findmenu, 'F&ind')
@@ -291,28 +300,34 @@ class TmpNote(wx.Frame):
 
         self.viewmenu = wx.Menu()
         menubar.Append(self.viewmenu, '&View')
-        self.word_wrap_option = self.viewmenu.Append(401, '&Word Wrap', 'Wrap lines at the text area width.', kind=wx.ITEM_CHECK)
+        self.word_wrap_option = self.viewmenu.Append(
+            401, '&Word Wrap', 'Wrap lines at the text area width.', kind=wx.ITEM_CHECK)
         self.viewmenu.Check(401, True)
         self.Bind(wx.EVT_MENU, self.word_wrap_toggle_event, id=401)
         self.viewmenu.AppendSeparator()
-        self.status_bar_option = self.viewmenu.Append(402, '&Status Bar', 'Display the status bar at the bottom of the window.', kind=wx.ITEM_CHECK)
+        self.status_bar_option = self.viewmenu.Append(
+            402, '&Status Bar', 'Display the status bar at the bottom of the window.', kind=wx.ITEM_CHECK)
         self.viewmenu.Check(402, True)
         self.Bind(wx.EVT_MENU, self.status_bar_toggle_event, id=402)
-        self.notebook_visible_option = self.viewmenu.Append(406, 'Notebook', 'Display the notebook.', kind=wx.ITEM_CHECK)
+        self.notebook_visible_option = self.viewmenu.Append(
+            406, 'Notebook', 'Display the notebook.', kind=wx.ITEM_CHECK)
         self.viewmenu.Check(406, True)
         self.Bind(wx.EVT_MENU, self.notebook_visible_toggle_event)
         self.viewmenu.AppendSeparator()
-        self.line_numbers_option = self.viewmenu.Append(403, '&Line Numbers', 'Display line numbers in the left margin.', kind=wx.ITEM_CHECK)
+        self.line_numbers_option = self.viewmenu.Append(
+            403, '&Line Numbers', 'Display line numbers in the left margin.', kind=wx.ITEM_CHECK)
         self.viewmenu.Check(403, True)
         self.Bind(wx.EVT_MENU, self.line_numbers_toggle_event, id=403)
-        self.folding_symbols_option = self.viewmenu.Append(404, 'Folding Symbols', 'Display folding symbols in the left margin.', kind=wx.ITEM_CHECK)
+        self.folding_symbols_option = self.viewmenu.Append(
+            404, 'Folding Symbols', 'Display folding symbols in the left margin.', kind=wx.ITEM_CHECK)
         self.viewmenu.Check(404, False)
         self.Bind(wx.EVT_MENU, self.folding_symbols_toggle_event, id=404)
         # self.nonfolding_symbols_option = self.viewmenu.Append(405, 'Non-Folding Symbols', 'Display non-folding symbols in the left margin.', kind=wx.ITEM_CHECK)
         # self.viewmenu.Check(405, True)
         # self.Bind(wx.EVT_MENU, None, id=405)
         self.viewmenu.AppendSeparator()
-        self.python_lexer_option = self.viewmenu.Append(407, 'Python syntax', 'Syntax highlighting using the Python lexer.', kind=wx.ITEM_CHECK)
+        self.python_lexer_option = self.viewmenu.Append(
+            407, 'Python syntax', 'Syntax highlighting using the Python lexer.', kind=wx.ITEM_CHECK)
         self.viewmenu.Check(407, False)
         self.Bind(wx.EVT_MENU, self.syntax_python_event, id=407)
 
@@ -340,7 +355,7 @@ class TmpNote(wx.Frame):
         # After this we can set base styles.
 
         page.SetUseTabs(False)
-        page.SetUseAntiAliasing(True)
+        # page.SetUseAntiAliasing(True) # TODO: I commented this out temporarily just to avoid an error. Need to fix that error!
         page.SetTabWidth(4)
         page.SetViewWhiteSpace(False)
         page.SetViewEOL(False)
@@ -350,18 +365,18 @@ class TmpNote(wx.Frame):
         font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
         page.StyleSetFont(stc.STC_STYLE_DEFAULT, font)
 
-        page.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255,255,255))
-        page.StyleSetBackground(stc.STC_STYLE_DEFAULT, (34,34,34))
-        page.SetSelForeground(True, (255,255,255))
-        page.SetSelBackground(True, (68,68,68))
-        page.SetCaretForeground((0,255,0))
+        page.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255, 255, 255))
+        page.StyleSetBackground(stc.STC_STYLE_DEFAULT, (34, 34, 34))
+        page.SetSelForeground(True, (255, 255, 255))
+        page.SetSelBackground(True, (68, 68, 68))
+        page.SetCaretForeground((0, 255, 0))
 
         # Reboot the styles after having just set the base styles.
         page.StyleClearAll()
         # After this we can set non-base styles.
 
-        page.StyleSetForeground(wx.stc.STC_STYLE_LINENUMBER, (151,151,151))
-        page.StyleSetBackground(wx.stc.STC_STYLE_LINENUMBER, (51,51,51))
+        page.StyleSetForeground(wx.stc.STC_STYLE_LINENUMBER, (151, 151, 151))
+        page.StyleSetBackground(wx.stc.STC_STYLE_LINENUMBER, (51, 51, 51))
 
         # Use the NULL lexer for default styles.
         page.SetLexer(stc.STC_LEX_NULL)
@@ -369,8 +384,10 @@ class TmpNote(wx.Frame):
 
         # For folding symbols: http://www.yellowbrain.com/stc/folding.html
         # Folding symbols margin settings.
-        page.SetFoldMarginColour(True, (41,41,41)) # Color 1 of checker pattern
-        page.SetFoldMarginHiColour(True, (51,51,51)) # Color 2 of checker pattern
+        # Color 1 of checker pattern
+        page.SetFoldMarginColour(True, (41, 41, 41))
+        # Color 2 of checker pattern
+        page.SetFoldMarginHiColour(True, (51, 51, 51))
         page.SetMarginSensitive(2, False)
 
     def set_styles_python(self):
@@ -383,7 +400,7 @@ class TmpNote(wx.Frame):
         # After this we can set base styles.
 
         page.SetUseTabs(False)
-        page.SetUseAntiAliasing(True)
+        # page.SetUseAntiAliasing(True) # TODO: I commented this out temporarily just to avoid an error. Need to fix that error!
         page.SetTabWidth(4)
         page.SetViewWhiteSpace(False)
         page.SetViewEOL(False)
@@ -393,18 +410,18 @@ class TmpNote(wx.Frame):
         font = wx.Font(9, wx.TELETYPE, wx.NORMAL, wx.NORMAL)
         page.StyleSetFont(stc.STC_STYLE_DEFAULT, font)
 
-        page.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255,255,255))
-        page.StyleSetBackground(stc.STC_STYLE_DEFAULT, (34,34,34))
-        page.SetSelForeground(True, (255,255,255))
-        page.SetSelBackground(True, (68,68,68))
-        page.SetCaretForeground((0,255,0))
+        page.StyleSetForeground(stc.STC_STYLE_DEFAULT, (255, 255, 255))
+        page.StyleSetBackground(stc.STC_STYLE_DEFAULT, (34, 34, 34))
+        page.SetSelForeground(True, (255, 255, 255))
+        page.SetSelBackground(True, (68, 68, 68))
+        page.SetCaretForeground((0, 255, 0))
 
         # Reboot the styles after having just set the base styles.
         page.StyleClearAll()
         # After this we can set non-base styles.
 
-        page.StyleSetForeground(wx.stc.STC_STYLE_LINENUMBER, (151,151,151))
-        page.StyleSetBackground(wx.stc.STC_STYLE_LINENUMBER, (51,51,51))
+        page.StyleSetForeground(wx.stc.STC_STYLE_LINENUMBER, (151, 151, 151))
+        page.StyleSetBackground(wx.stc.STC_STYLE_LINENUMBER, (51, 51, 51))
 
         # Use the PYTHON lexer for Python styles.
         page.SetLexer(stc.STC_LEX_PYTHON)
@@ -425,23 +442,32 @@ class TmpNote(wx.Frame):
 
         # For folding symbols: http://www.yellowbrain.com/stc/folding.html
         # Define markers and colors for folding symbols.
-        c1 = (51,51,51) # Color 1
-        c2 = (151,151,151) # Color 2
+        c1 = (51, 51, 51)  # Color 1
+        c2 = (151, 151, 151)  # Color 2
         # These seven logical symbols make up the mask stc.STC_MASK_FOLDERS which we use a bit later.
-        page.MarkerDefine(stc.STC_MARKNUM_FOLDEROPEN, stc.STC_MARK_BOXMINUS, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDEROPEN,
+                          stc.STC_MARK_BOXMINUS, c1, c2)
         page.MarkerDefine(stc.STC_MARKNUM_FOLDER, stc.STC_MARK_BOXPLUS, c1, c2)
-        page.MarkerDefine(stc.STC_MARKNUM_FOLDERSUB, stc.STC_MARK_VLINE, c1, c2)
-        page.MarkerDefine(stc.STC_MARKNUM_FOLDERTAIL, stc.STC_MARK_LCORNERCURVE, c1, c2)
-        page.MarkerDefine(stc.STC_MARKNUM_FOLDEREND, stc.STC_MARK_BOXPLUSCONNECTED, c1, c2)
-        page.MarkerDefine(stc.STC_MARKNUM_FOLDEROPENMID, stc.STC_MARK_BOXMINUSCONNECTED, c1, c2)
-        page.MarkerDefine(stc.STC_MARKNUM_FOLDERMIDTAIL, stc.STC_MARK_TCORNERCURVE, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDERSUB,
+                          stc.STC_MARK_VLINE, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDERTAIL,
+                          stc.STC_MARK_LCORNERCURVE, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDEREND,
+                          stc.STC_MARK_BOXPLUSCONNECTED, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDEROPENMID,
+                          stc.STC_MARK_BOXMINUSCONNECTED, c1, c2)
+        page.MarkerDefine(stc.STC_MARKNUM_FOLDERMIDTAIL,
+                          stc.STC_MARK_TCORNERCURVE, c1, c2)
         # Folding symbols margin settings.
-        page.SetFoldFlags(16) # 16 = Draw a solid line below folded markers
-        page.SetFoldMarginColour(True, (41,41,41)) # Color 1 of checker pattern
-        page.SetFoldMarginHiColour(True, (51,51,51)) # Color 2 of checker pattern
+        page.SetFoldFlags(16)  # 16 = Draw a solid line below folded markers
+        # Color 1 of checker pattern
+        page.SetFoldMarginColour(True, (41, 41, 41))
+        # Color 2 of checker pattern
+        page.SetFoldMarginHiColour(True, (51, 51, 51))
         page.SetProperty("fold", "1")
         page.SetMarginType(2, stc.STC_MARGIN_SYMBOL)
-        page.SetMarginMask(2, stc.STC_MASK_FOLDERS) # Use the seven logical symbols defined a bit earlier.
+        # Use the seven logical symbols defined a bit earlier.
+        page.SetMarginMask(2, stc.STC_MASK_FOLDERS)
         page.SetMarginSensitive(2, True)
 
     def status_bar(self):
@@ -614,7 +640,8 @@ class TmpNote(wx.Frame):
 
         page = self.notebook.GetCurrentPage()
 
-        self.statusbar.SetStatusText('You switched to {0}'.format(page.filename), 0)
+        self.statusbar.SetStatusText(
+            'You switched to {0}'.format(page.filename), 0)
         self.statusbar.SetStatusText(page.filename, 1)
 
         self.viewmenu.Check(401, page.word_wrap)
@@ -651,15 +678,15 @@ class TmpNote(wx.Frame):
         page.datetime = str(datetime.datetime.now())
 
         # http://www.scintilla.org/ScintillaDoc.html#Margins
-        page.SetMarginLeft(6) # Text area left margin.
-        page.SetMarginWidth(0, 0) # Line numbers margin.
-        page.SetMarginWidth(1, 0) # Non-folding symbols margin.
-        page.SetMarginWidth(2, 0) # Folding symbols margin.
+        page.SetMarginLeft(6)  # Text area left margin.
+        page.SetMarginWidth(0, 0)  # Line numbers margin.
+        page.SetMarginWidth(1, 0)  # Non-folding symbols margin.
+        page.SetMarginWidth(2, 0)  # Folding symbols margin.
 
         self.notebook.AddPage(
-            page = page,
-            text = 'Untitled',
-            select = True
+            page=page,
+            text='Untitled',
+            select=True
         )
 
         self.set_styles_default()
@@ -679,12 +706,12 @@ class TmpNote(wx.Frame):
         self.show_notebook_if_not_shown()
 
         dlg = wx.FileDialog(
-            parent = self,
-            message = 'Select a file to open.',
-            defaultDir = os.getcwd(),
-            defaultFile = 'tmpNote.txtmp',
-            wildcard = 'All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
-            style = wx.OPEN|wx.CHANGE_DIR|wx.MULTIPLE
+            parent=self,
+            message='Select a file to open.',
+            defaultDir=os.getcwd(),
+            defaultFile='tmpNote.txtmp',
+            wildcard='All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
+            style=wx.OPEN | wx.CHANGE_DIR | wx.MULTIPLE
         )
         result = dlg.ShowModal()
         dlg.Destroy()
@@ -722,38 +749,41 @@ class TmpNote(wx.Frame):
                     page.datetime = str(datetime.datetime.now())
 
                     # http://www.scintilla.org/ScintillaDoc.html#Margins
-                    page.SetMarginLeft(6) # Text area left margin.
-                    page.SetMarginWidth(0, 0) # Line numbers margin.
-                    page.SetMarginWidth(1, 0) # Non-folding symbols margin.
-                    page.SetMarginWidth(2, 0) # Folding symbols margin.
+                    page.SetMarginLeft(6)  # Text area left margin.
+                    page.SetMarginWidth(0, 0)  # Line numbers margin.
+                    page.SetMarginWidth(1, 0)  # Non-folding symbols margin.
+                    page.SetMarginWidth(2, 0)  # Folding symbols margin.
 
                     self.notebook.AddPage(
-                        page = page,
-                        text =  page.filename,
-                        select = True
+                        page=page,
+                        text=page.filename,
+                        select=True
                     )
 
                     self.set_styles_default()
                     page.SetFocus()
                     page.SetSavePoint()
 
-                    self.statusbar.SetStatusText('You opened {0}'.format(filename), 0)
+                    self.statusbar.SetStatusText(
+                        'You opened {0}'.format(filename), 0)
                     self.statusbar.SetStatusText(filename, 1)
                 except (IOError, UnicodeDecodeError) as error:
                     error_dlg = wx.MessageDialog(
-                        parent = self,
-                        message = 'Error trying to open {0}.\n\n{1}'.format(filename, error),
-                        caption = 'Error',
-                        style = wx.ICON_EXCLAMATION
+                        parent=self,
+                        message='Error trying to open {0}.\n\n{1}'.format(
+                            filename, error),
+                        caption='Error',
+                        style=wx.ICON_EXCLAMATION
                     )
                     error_dlg.ShowModal()
                     error_dlg.Destroy()
                 except:
                     error_dlg = wx.MessageDialog(
-                        parent = self,
-                        message = 'Error trying to open {0}.\n\n'.format(filename),
-                        caption = 'Error',
-                        style = wx.ICON_EXCLAMATION
+                        parent=self,
+                        message='Error trying to open {0}.\n\n'.format(
+                            filename),
+                        caption='Error',
+                        style=wx.ICON_EXCLAMATION
                     )
                     error_dlg.ShowModal()
                     error_dlg.Destroy()
@@ -772,7 +802,7 @@ class TmpNote(wx.Frame):
             self.notify_ok(self, message, caption)
         elif event.GetId() == wx.ID_SAVE and page_count > 0:
             self.save_file()
-        elif event.GetId() == wx.ID_SAVEAS  and page_count > 0:
+        elif event.GetId() == wx.ID_SAVEAS and page_count > 0:
             self.save_file_as()
         else:
             event.Skip()
@@ -794,28 +824,37 @@ class TmpNote(wx.Frame):
                 f.write(text)
                 f.close()
                 page.SetSavePoint()
-                self.statusbar.SetStatusText('You saved {0}'.format(page.filename), 0)
+                self.statusbar.SetStatusText(
+                    'You saved {0}'.format(page.filename), 0)
                 self.statusbar.SetStatusText(page.filename, 1)
-            except IOError, error:
+            except IOError:
                 error_dlg = wx.MessageDialog(
-                    parent = self,
-                    message = 'Error trying to save {0}.\n\n{1}'.format(page.filename, error),
-                    caption = 'Error',
-                    style = wx.ICON_EXCLAMATION
+                    parent=self,
+                    message='Error trying to save {0}.\n\n{1}'.format(
+                        page.filename, error),
+                    caption='Error',
+                    style=wx.ICON_EXCLAMATION
                 )
                 error_dlg.ShowModal()
                 error_dlg.Destroy()
-                self.statusbar.SetStatusText('There was an error saving the file.', 0)
-            except:
+                self.statusbar.SetStatusText(
+                    'There was an error saving the file.',
+                    0
+                )
+            except Exception:
                 error_dlg = wx.MessageDialog(
-                    parent = self,
-                    message = 'Error trying to save {0}.\n\n'.format(page.filename),
-                    caption = 'Error',
-                    style = wx.ICON_EXCLAMATION
+                    parent=self,
+                    message='Error trying to save {0}.\n\n'.format(
+                        page.filename),
+                    caption='Error',
+                    style=wx.ICON_EXCLAMATION
                 )
                 error_dlg.ShowModal()
                 error_dlg.Destroy()
-                self.statusbar.SetStatusText('There was an error saving the file.', 0)
+                self.statusbar.SetStatusText(
+                    'There was an error saving the file.',
+                    0
+                )
 
     def save_file_as(self):
         """Save the selected page text to file, using Save As."""
@@ -830,12 +869,12 @@ class TmpNote(wx.Frame):
             default_file = page.filename
 
         dlg = wx.FileDialog(
-            parent = self,
-            message = 'Select a file to save.',
-            defaultDir = os.getcwd(),
-            defaultFile = default_file,
-            wildcard = 'All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
-            style = wx.SAVE|wx.OVERWRITE_PROMPT
+            parent=self,
+            message='Select a file to save.',
+            defaultDir=os.getcwd(),
+            defaultFile=default_file,
+            wildcard='All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
+            style=wx.SAVE | wx.OVERWRITE_PROMPT
         )
         result = dlg.ShowModal()
         path = dlg.GetPath()
@@ -851,32 +890,36 @@ class TmpNote(wx.Frame):
                 page.SetSavePoint()
                 page.path = path
                 page.filename = filename
-                self.statusbar.SetStatusText('You saved {0}.'.format(filename), 0)
+                self.statusbar.SetStatusText(
+                    'You saved {0}.'.format(filename), 0)
                 self.statusbar.SetStatusText(filename, 1)
                 self.notebook.SetPageText(
-                        page = self.notebook.GetSelection(),
-                        text = filename
+                    page=self.notebook.GetSelection(),
+                    text=filename
                 )
-            except IOError, error:
+            except IOError:
                 error_dlg = wx.MessageDialog(
-                    parent = self,
-                    message = 'Error trying to save {0}.\n\n{1},'.format(filename, error),
-                    caption = 'Error',
-                    style = wx.ICON_EXCLAMATION
+                    parent=self,
+                    message='Error trying to save {0}.\n\n{1},'.format(
+                        filename, error),
+                    caption='Error',
+                    style=wx.ICON_EXCLAMATION
                 )
                 error_dlg.ShowModal()
                 error_dlg.Destroy()
-                self.statusbar.SetStatusText('There was an error saving the file.', 0)
-            except:
+                self.statusbar.SetStatusText(
+                    'There was an error saving the file.', 0)
+            except Exception:
                 error_dlg = wx.MessageDialog(
-                    parent = self,
-                    message = 'Error trying to save {0}.\n\n'.format(filename),
-                    caption = 'Error',
-                    style = wx.ICON_EXCLAMATION
+                    parent=self,
+                    message='Error trying to save {0}.\n\n'.format(filename),
+                    caption='Error',
+                    style=wx.ICON_EXCLAMATION
                 )
                 error_dlg.ShowModal()
                 error_dlg.Destroy()
-                self.statusbar.SetStatusText('There was an error saving the file.', 0)
+                self.statusbar.SetStatusText(
+                    'There was an error saving the file.', 0)
         else:
             self.statusbar.SetStatusText('The file was not saved.', 0)
 
@@ -928,10 +971,12 @@ class TmpNote(wx.Frame):
             # If they exist, it indicates that the save failed. Veto the event.
             if page.GetModify() == True:
                 event.Veto()
-                self.statusbar.SetStatusText('{0} was not closed.'.format(filename), 0)
+                self.statusbar.SetStatusText(
+                    '{0} was not closed.'.format(filename), 0)
             else:
                 self.pages.pop(self.pages.index(page))
-                self.statusbar.SetStatusText('{0} was closed.'.format(filename), 0)
+                self.statusbar.SetStatusText(
+                    '{0} was closed.'.format(filename), 0)
                 self.statusbar.SetStatusText('', 1)
 
     def close_all_event(self, event):
@@ -940,7 +985,8 @@ class TmpNote(wx.Frame):
         page_count = self.notebook.GetPageCount()
 
         if event.GetId() == wx.ID_CLOSE_ALL and page_count == 0:
-            self.statusbar.SetStatusText('There are no files open to close.', 0)
+            self.statusbar.SetStatusText(
+                'There are no files open to close.', 0)
             message = 'You selected to close all files. There are no files open to close.'
             caption = 'There are no files open to close.'
             self.notify_ok(self, message, caption)
@@ -1004,7 +1050,7 @@ class TmpNote(wx.Frame):
         else:
             event.Skip()
 
-    def undo_redo_action(self,event):
+    def undo_redo_action(self, event):
         """Undo or redo action or actions in the undo history."""
 
         page = self.notebook.GetCurrentPage()
@@ -1036,8 +1082,10 @@ class TmpNote(wx.Frame):
         a7 = '                /                                 '
         a8 = '  tmpNote      /              Another text editor.'
 
-        asciiart = '{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n{7}\n\n\n\n'.format(a1,a2,a3,a4,a5,a6,a7,a8)
-        info = '  Version {0}\n  License {1}\n  {2}'.format(__version__, __license__, __copyright__)
+        asciiart = '{0}\n{1}\n{2}\n{3}\n{4}\n{5}\n{6}\n{7}\n\n\n\n'.format(
+            a1, a2, a3, a4, a5, a6, a7, a8)
+        info = '  Version {0}\n  License {1}\n  {2}'.format(
+            __version__, __license__, __copyright__)
         text = '{0}{1}'.format(asciiart, info)
 
         readonly = True
@@ -1057,15 +1105,15 @@ class TmpNote(wx.Frame):
         page.datetime = str(datetime.datetime.now())
 
         # http://www.scintilla.org/ScintillaDoc.html#Margins
-        page.SetMarginLeft(6) # Text area left margin.
-        page.SetMarginWidth(0, 0) # Line numbers margin.
-        page.SetMarginWidth(1, 0) # Non-folding symbols margin.
-        page.SetMarginWidth(2, 0) # Folding symbols margin.
+        page.SetMarginLeft(6)  # Text area left margin.
+        page.SetMarginWidth(0, 0)  # Line numbers margin.
+        page.SetMarginWidth(1, 0)  # Non-folding symbols margin.
+        page.SetMarginWidth(2, 0)  # Folding symbols margin.
 
         self.notebook.AddPage(
-            page = page,
-            text = 'About tmpNote',
-            select = True
+            page=page,
+            text='About tmpNote',
+            select=True
         )
 
         self.set_styles_default()
@@ -1084,11 +1132,11 @@ class TmpNote(wx.Frame):
         """Notify the operator about something."""
 
         dialog = wx.MessageDialog(
-            parent = parent,
-            message = message,
-            caption = caption,
-            style = wx.ICON_EXCLAMATION|wx.OK,
-            pos = wx.DefaultPosition
+            parent=parent,
+            message=message,
+            caption=caption,
+            style=wx.ICON_EXCLAMATION | wx.OK,
+            pos=wx.DefaultPosition
         )
         result = dialog.ShowModal()
         dialog.Destroy()
@@ -1097,11 +1145,11 @@ class TmpNote(wx.Frame):
         """Ask the operator a yes/no question. Return True for yes, False for no."""
 
         dialog = wx.MessageDialog(
-            parent = parent,
-            message = message,
-            caption = caption,
-            style = wx.ICON_QUESTION|wx.YES_NO|wx.NO_DEFAULT,
-            pos = wx.DefaultPosition
+            parent=parent,
+            message=message,
+            caption=caption,
+            style=wx.ICON_QUESTION | wx.YES_NO | wx.NO_DEFAULT,
+            pos=wx.DefaultPosition
         )
         result = dialog.ShowModal()
         dialog.Destroy()
@@ -1131,7 +1179,8 @@ class TmpNote(wx.Frame):
                 # Daisy, Daisy / Give me your answer, do.
                 self.Destroy()
             else:
-                self.statusbar.SetStatusText('Open files were not closed. Quit canceled', 0)
+                self.statusbar.SetStatusText(
+                    'Open files were not closed. Quit canceled', 0)
         else:
             self.statusbar.SetStatusText('Quit canceled.', 0)
 
@@ -1140,6 +1189,7 @@ def main():
     app = wx.App(redirect=True)
     TmpNote(None)
     app.MainLoop()
+
 
 if __name__ == '__main__':
     main()
