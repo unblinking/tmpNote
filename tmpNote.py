@@ -17,8 +17,6 @@ __license__ = 'GPL'
 __version__ = '0.0.7'
 
 
-# Always use the latest SVN version of AGW.
-# http://svn.wxwidgets.org/svn/wx/wxPython/3rdParty/AGW/
 class FlatNotebook(fnb.FlatNotebook):
     """Create a FlatNotebook."""
 
@@ -29,17 +27,14 @@ class FlatNotebook(fnb.FlatNotebook):
             self,
             parent=parent,
             id=wx.ID_ANY,
-            agwStyle=fnb.FNB_NO_TAB_FOCUS | fnb.FNB_X_ON_TAB | fnb.FNB_NAV_BUTTONS_WHEN_NEEDED | fnb.FNB_HIDE_ON_SINGLE_TAB | fnb.FNB_RIBBON_TABS
+            agwStyle=(
+                fnb.FNB_NO_TAB_FOCUS | fnb.FNB_X_ON_TAB |
+                fnb.FNB_NAV_BUTTONS_WHEN_NEEDED | fnb.FNB_HIDE_ON_SINGLE_TAB |
+                fnb.FNB_RIBBON_TABS
+            )
         )
 
         self.SetTabAreaColour((100, 100, 100))
-        # Setting the active tab color was difficult for ribbon style tabs
-        # FlatNotebook.py line 3817 was using LightColour(pc._tabAreaColour,60)
-        # This gave a brighter version of the tab area color by 60 percent.
-        # I wanted to set active tab color independently
-        # I changed it to pc._activeTabColour
-        # Now I can use SetActiveTabColour() with the ribbon style tabs
-        self.SetActiveTabColour((200, 200, 200))
         self.SetActiveTabTextColour((0, 0, 0))
         self.SetNonActiveTabTextColour((0, 0, 0))
 
@@ -81,7 +76,7 @@ class TxtCtrl(stc.StyledTextCtrl):
         """Define the initialization behavior of the StyledTextCtrl."""
 
         stc.StyledTextCtrl.__init__(self, parent, wx.ID_ANY)
-        # self.SetTextRaw(text) # TODO: I commented this out to temporarily get rid of an error, need to fix that error.
+        self.SetText(text)
         self.SetReadOnly(readonly)  # bool
         self.Bind(stc.EVT_STC_MARGINCLICK, self.margin_click)
 
@@ -355,7 +350,6 @@ class TmpNote(wx.Frame):
         # After this we can set base styles.
 
         page.SetUseTabs(False)
-        # page.SetUseAntiAliasing(True) # TODO: I commented this out temporarily just to avoid an error. Need to fix that error!
         page.SetTabWidth(4)
         page.SetViewWhiteSpace(False)
         page.SetViewEOL(False)
@@ -400,7 +394,6 @@ class TmpNote(wx.Frame):
         # After this we can set base styles.
 
         page.SetUseTabs(False)
-        # page.SetUseAntiAliasing(True) # TODO: I commented this out temporarily just to avoid an error. Need to fix that error!
         page.SetTabWidth(4)
         page.SetViewWhiteSpace(False)
         page.SetViewEOL(False)
@@ -711,7 +704,7 @@ class TmpNote(wx.Frame):
             defaultDir=os.getcwd(),
             defaultFile='tmpNote.txtmp',
             wildcard='All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
-            style=wx.OPEN | wx.CHANGE_DIR | wx.MULTIPLE
+            style=wx.FD_OPEN | wx.FD_CHANGE_DIR | wx.FD_MULTIPLE
         )
         result = dlg.ShowModal()
         dlg.Destroy()
@@ -874,7 +867,7 @@ class TmpNote(wx.Frame):
             defaultDir=os.getcwd(),
             defaultFile=default_file,
             wildcard='All files (*.*)|*.*|tmpNote files (*.txtmp)|*.txtmp|Text files (*.txt)|*.txt',
-            style=wx.SAVE | wx.OVERWRITE_PROMPT
+            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT
         )
         result = dlg.ShowModal()
         path = dlg.GetPath()
