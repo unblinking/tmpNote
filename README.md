@@ -2,6 +2,7 @@
 
 ## Another text editor  
 
+![Awesome](https://img.shields.io/badge/Awesome-Very-blue.svg?style=flat-square)  
 [![Code Climate](https://img.shields.io/codeclimate/github/nothingworksright/tmpNote.svg?style=flat-square&label=Code%20Review%20GPA)](https://codeclimate.com/github/nothingworksright/tmpNote)
 [![Issue Count](https://img.shields.io/codeclimate/issues/github/nothingworksright/tmpNote.svg?style=flat-square&label=Code%20Review%20Issues%20Found)](https://codeclimate.com/github/nothingworksright/tmpNote)  
 
