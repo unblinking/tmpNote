@@ -14,6 +14,10 @@ tmpNote is a combination of [wxPython](http://www.wxpython.org/), [AGW Flatnoteb
 
 tmpNote started as a project to learn [wxPython](http://www.wxpython.org/). If it can serve as an example for anyone else learning [Python](https://www.python.org/) or [wxPython](http://www.wxpython.org/) that is great. If you are looking for a text editor to actually use I recommend [Sublime Text](http://www.sublimetext.com/).  
 
-## Show your support  
+## Getting Started  
+
+Check out the [Wiki](https://github.com/nothingworksright/tmpNote/wiki) for instructions.  
+
+## Show Your Support  
 
 Support this project by [making a pledge via Patreon](https://www.patreon.com/jmg1138).  
