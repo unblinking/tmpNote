@@ -8,7 +8,7 @@
 
 ![Awesome](https://img.shields.io/badge/Awesome-Very-blue.svg?style=flat-square)  
 [![Python 3](https://img.shields.io/badge/Python%20Version-3.6.2-orange.svg?style=flat-square)](https://www.python.org) [![PEP8](https://img.shields.io/badge/Code%20Style-PEP%208-orange.svg?style=flat-square)](https://www.python.org/dev/peps/pep-0008/)  
-[![Code Climate](https://img.shields.io/codeclimate/github/nothingworksright/tmpNote.svg?style=flat-square&label=Code%20Review%20GPA)](https://codeclimate.com/github/nothingworksright/tmpNote) [![Issue Count](https://img.shields.io/codeclimate/issues/github/nothingworksright/tmpNote.svg?style=flat-square&label=Code%20Review%20Issues%20Found)](https://codeclimate.com/github/nothingworksright/tmpNote)  
+[![Code Climate](https://img.shields.io/codeclimate/github/nothingworksright/tmpNote.svg?style=flat-square&label=Code%20Review%20GPA)](https://codeclimate.com/github/nothingworksright/tmpNote) [![Issue Count](https://img.shields.io/codeclimate/issues/github/nothingworksright/tmpNote.svg?style=flat-square&label=Code%20Review%20Issues%20Found)](https://codeclimate.com/github/nothingworksright/tmpNote/issues)  
 
 ## About  
 
