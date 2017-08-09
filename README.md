@@ -11,6 +11,8 @@ _(_ __/_/__/___/___/_/___|/____(___/_(_ __(___ _
 tmpNote      /              Another text editor.
 ```
 
+Edit some temporary notes, or important Python source code.  
+
 ![Screenshot of Python syntax highlighting](https://raw.githubusercontent.com/wiki/nothingworksright/tmpNote/tmpNote_screenshot_pythonSyntaxHighlighting.png)  
 
 ![Awesome](https://img.shields.io/badge/Awesome-Very-blue.svg?style=flat-square)  
