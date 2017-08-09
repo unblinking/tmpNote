@@ -1,8 +1,15 @@
 # 📓 tmpNote  
 
-## Another text editor  
-
-![Screenshot of About](https://raw.githubusercontent.com/wiki/nothingworksright/tmpNote/tmpNote_screenshot_about.png)  
+```
+________________________________________________
+                        _     _                 
+                        /|   /                  
+--_/_---_--_------__---/-| -/-----__--_/_----__-
+  /    / /  )   /   ) /  | /    /   ) /    /___)
+_(_ __/_/__/___/___/_/___|/____(___/_(_ __(___ _
+              /                                 
+tmpNote      /              Another text editor.
+```
 
 ![Screenshot of Python syntax highlighting](https://raw.githubusercontent.com/wiki/nothingworksright/tmpNote/tmpNote_screenshot_pythonSyntaxHighlighting.png)  
 
