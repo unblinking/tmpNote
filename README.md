@@ -31,6 +31,10 @@ tmpNote started as a project to learn [wxPython](http://www.wxpython.org/). If i
 
 Check out the [Wiki](https://github.com/nothingworksright/tmpNote/wiki) for instructions.  
 
-## Show Your Support  
+## Show your support  
 
-Support this project by [making a pledge via Patreon](https://www.patreon.com/jmg1138).  
+Support this open source project and motivate me to continue development. Using [Beerpay.io](https://beerpay.io/nothingworksright/tmpNote?focus=wish) you can send me support, and make a wish for a new feature or issue fix.  
+
+[Click here to show your support](https://beerpay.io/nothingworksright/tmpNote?focus=wish).  
+
+[![Beerpay](https://beerpay.io/nothingworksright/tmpNote/badge.svg?style=beer-square)](https://beerpay.io/nothingworksright/tmpNote)  [![Beerpay](https://beerpay.io/nothingworksright/tmpNote/make-wish.svg?style=flat-square)](https://beerpay.io/nothingworksright/tmpNote?focus=wish)  
