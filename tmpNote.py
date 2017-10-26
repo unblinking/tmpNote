@@ -10,10 +10,10 @@ import datetime
 import webbrowser
 from tmpNoteIcon import gettmpNoteIconIcon
 
-__author__ = 'Joshua Gray'
-__email__ = 'joshua@tmpNote.com'
+__author__ = 'jmg1138'
+__email__ = 'jmg1138@tmpnote.com'
 __copyright__ = 'Copyright tmpNote.com'
-__license__ = 'GPL'
+__license__ = 'MIT'
 __version__ = '0.0.7'
 
 
