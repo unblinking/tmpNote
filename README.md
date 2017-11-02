@@ -29,4 +29,4 @@ Support this open source project and motivate me to continue development. Using 
 
 [Click here to show your support](https://beerpay.io/nothingworksright/tmpNote?focus=wish).  
 
-[![Beerpay](https://beerpay.io/nothingworksright/tmpNote/badge.svg?style=beer-square)](https://beerpay.io/nothingworksright/tmpNote)  [![Beerpay](https://beerpay.io/nothingworksright/tmpNote/make-wish.svg?style=flat-square)](https://beerpay.io/nothingworksright/tmpNote?focus=wish)  
+[![Beerpay](https://beerpay.io/nothingworksright/tmpNote/badge.svg?style=beer)](https://beerpay.io/nothingworksright/tmpNote)  [![Beerpay](https://beerpay.io/nothingworksright/tmpNote/make-wish.svg?style=flat)](https://beerpay.io/nothingworksright/tmpNote?focus=wish)  
