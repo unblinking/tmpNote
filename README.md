@@ -4,7 +4,7 @@ Another text editor.
 
 Edit some temporary notes (plain text), or Python source code (syntax highlighting). A simple text editor with undo/redo, cut/copy/paste/delete, select all, word wrap, line numbers, folding symbols, and Python syntax highlighting.  
 
-[![Python 3](https://img.shields.io/badge/Python%20Version-3.6.2-orange.svg?style=flat)](https://www.python.org)
+[![Python 2.7](https://img.shields.io/badge/Python%20Version-2.7-orange.svg?style=flat)](https://www.python.org)
 [![PEP8](https://img.shields.io/badge/Code%20Style-PEP%208-orange.svg?style=flat)](https://www.python.org/dev/peps/pep-0008/)
 [![Code Climate](https://codeclimate.com/github/nothingworksright/tmpNote/badges/gpa.svg)](https://codeclimate.com/github/nothingworksright/tmpNote)
 [![Issue Count](https://codeclimate.com/github/nothingworksright/tmpNote/badges/issue_count.svg)](https://codeclimate.com/github/nothingworksright/tmpNote)  
