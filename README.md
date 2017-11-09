@@ -11,7 +11,7 @@ Edit some temporary notes (plain text), or Python source code (syntax highlighti
 
 ## Getting Started  
 
-For Windows 10 users, download a [prebuilt Windows executable file](https://github.com/nothingworksright/tmpNote/releases/download/v0.0.1/tmpNote.exe) from the [releases](https://github.com/nothingworksright/tmpNote/releases) (no installation required).  
+For Windows 10 64-bit users, download a [prebuilt Windows executable file](https://github.com/nothingworksright/tmpNote/releases/download/v0.0.7/tmpNote_windows10_64bit.exe) from the [releases](https://github.com/nothingworksright/tmpNote/releases) (no installation required).  
 
 For other information such as [installation instructions using the source code directly](https://github.com/nothingworksright/tmpNote/wiki/Installation) or [screenshots](https://github.com/nothingworksright/tmpNote/wiki/Screenshots), check out the [Wiki](https://github.com/nothingworksright/tmpNote/wiki).  
 
