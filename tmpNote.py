@@ -279,7 +279,9 @@ class TmpNote(wx.Frame):
         editmenu.Append(
             wx.ID_COPY, '&Copy\tCtrl+C', 'Copy selection from file.'
         )
-        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_COPY)
+        self.Bind(
+            wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_COPY
+        )
         editmenu.Append(
             wx.ID_PASTE, '&Paste\tCtrl+V', 'Paste clipboard into file.'
         )
