@@ -276,15 +276,25 @@ class TmpNote(wx.Frame):
         editmenu.AppendSeparator()
         editmenu.Append(wx.ID_CUT, 'Cut\tCtrl+X', 'Cut selection from file.')
         self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_CUT)
-        editmenu.Append(wx.ID_COPY, '&Copy\tCtrl+C', 'Copy selection from file.')
+        editmenu.Append(
+            wx.ID_COPY, '&Copy\tCtrl+C', 'Copy selection from file.'
+        )
         self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_COPY)
-        editmenu.Append(wx.ID_PASTE, '&Paste\tCtrl+V', 'Paste clipboard into file.')
-        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_PASTE)
+        editmenu.Append(
+            wx.ID_PASTE, '&Paste\tCtrl+V', 'Paste clipboard into file.'
+        )
+        self.Bind(
+            wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_PASTE
+        )
         editmenu.Append(wx.ID_DELETE, 'Delete', 'Delete the selected text.')
-        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_DELETE)
+        self.Bind(
+            wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_DELETE
+            )
         editmenu.AppendSeparator()
         editmenu.Append(wx.ID_SELECTALL, 'Select All', 'Select all text.')
-        self.Bind(wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_SELECTALL)
+        self.Bind(
+            wx.EVT_MENU, self.cut_copy_paste_del_sel_event, id=wx.ID_SELECTALL
+        )
 
         # findmenu = wx.Menu()
         # menubar.Append(findmenu, 'F&ind')
@@ -1062,7 +1072,9 @@ class TmpNote(wx.Frame):
     def cut_copy_paste_del_sel_event(self, event):
         """Event requesting cut, copy, paste, delete, or select all text."""
 
-        ids = set((wx.ID_CUT, wx.ID_COPY, wx.ID_PASTE, wx.ID_DELETE, wx.ID_SELECTALL))
+        ids = set((
+            wx.ID_CUT, wx.ID_COPY, wx.ID_PASTE, wx.ID_DELETE, wx.ID_SELECTALL
+        ))
         if event.GetId() in ids:
             self.cut_copy_paste_del_sel_action(event)
         else:
