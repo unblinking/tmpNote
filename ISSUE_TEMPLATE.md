@@ -2,8 +2,10 @@
 
 ### System details  
 
--[] Operating system and version  
--[] Python version  
+Question|Your answer
+--|--
+Operating system|  
+Python version|  
 
 ### Steps to reproduce the issue  
 
