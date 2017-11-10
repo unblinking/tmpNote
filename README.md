@@ -4,16 +4,22 @@ Another text editor.
 
 Edit some temporary notes (plain text), or Python source code (syntax highlighting). A simple text editor with undo/redo, cut/copy/paste/delete, select all, word wrap, line numbers, folding symbols, and Python syntax highlighting.  
 
-[![Python 2.7](https://img.shields.io/badge/Python%20Version-2.7-orange.svg?style=flat)](https://www.python.org)
-[![PEP8](https://img.shields.io/badge/Code%20Style-PEP%208-orange.svg?style=flat)](https://www.python.org/dev/peps/pep-0008/)
-[![Code Climate](https://codeclimate.com/github/nothingworksright/tmpNote/badges/gpa.svg)](https://codeclimate.com/github/nothingworksright/tmpNote)
-[![Issue Count](https://codeclimate.com/github/nothingworksright/tmpNote/badges/issue_count.svg)](https://codeclimate.com/github/nothingworksright/tmpNote)  
+[![Python 2.7](https://img.shields.io/badge/Python%20Version-2.7-orange.svg?style=flat)](https://www.python.org) [![PEP8](https://img.shields.io/badge/Code%20Style-PEP%208-orange.svg?style=flat)](https://www.python.org/dev/peps/pep-0008/) [![Code Climate](https://codeclimate.com/github/nothingworksright/tmpNote/badges/gpa.svg)](https://codeclimate.com/github/nothingworksright/tmpNote) [![Issue Count](https://codeclimate.com/github/nothingworksright/tmpNote/badges/issue_count.svg)](https://codeclimate.com/github/nothingworksright/tmpNote)  
 
 ## Getting Started  
 
-For Windows 10 64-bit users, download a [prebuilt Windows executable file](https://github.com/nothingworksright/tmpNote/releases/download/v0.0.7/tmpNote_windows10_64bit.exe) from the [releases](https://github.com/nothingworksright/tmpNote/releases) (no installation required).  
+### Single File Download  
 
-For other information such as [installation instructions using the source code directly](https://github.com/nothingworksright/tmpNote/wiki/Installation) or [screenshots](https://github.com/nothingworksright/tmpNote/wiki/Screenshots), check out the [Wiki](https://github.com/nothingworksright/tmpNote/wiki).  
+Download a single executable file, no installation required.  
+
+[tmpNote for Windows](https://github.com/nothingworksright/tmpNote/releases/download/v0.0.7/tmpNote_windows10_64bit.exe) (Windows 10 64-bit)  
+[tmpNote for Linux](https://github.com/nothingworksright/tmpNote/releases/download/v0.0.7/tmpNote_ubuntu1704_64bit) (Ubuntu 17.04 64-bit)  
+
+### Other Installations  
+
+For other [installation instructions](https://github.com/nothingworksright/tmpNote/wiki/Installation) or [screenshots](https://github.com/nothingworksright/tmpNote/wiki/Screenshots), check out the [Wiki](https://github.com/nothingworksright/tmpNote/wiki).  
+
+See the [releases](https://github.com/nothingworksright/tmpNote/releases) for additional release information.  
 
 ## About  
 
