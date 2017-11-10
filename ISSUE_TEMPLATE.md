@@ -2,10 +2,10 @@
 
 ### System details  
 
-Question|Your answer
---|--
-Operating system|  
-Python version|  
+ Question        | Answer
+-----------------|-----------
+Operating system | 
+Python version   | 
 
 ### Steps to reproduce the issue  
 
