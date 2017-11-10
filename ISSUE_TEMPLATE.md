@@ -2,10 +2,8 @@
 
 ### System details  
 
- Question        | Answer
------------------|-----------
-Operating system | 
-Python version   | 
+Operating system?  
+Python version?  
 
 ### Steps to reproduce the issue  
 
