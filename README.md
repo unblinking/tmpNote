@@ -28,11 +28,3 @@ Source code written in [Python](https://www.python.org/), using the [Sublime Tex
 tmpNote is a combination of [wxPython](http://www.wxpython.org/), [AGW Flatnotebook](http://svn.wxwidgets.org/svn/wx/wxPython/3rdParty/AGW/agw/flatnotebook.py) ( [another link](https://docs.wxpython.org/wx.lib.agw.flatnotebook.html#module-wx.lib.agw.flatnotebook) ), and [StyledTextCtrl](https://docs.wxpython.org/wx.stc.StyledTextCtrl.html#wx.stc.StyledTextCtrl).  
 
 tmpNote started as a project to learn [wxPython](http://www.wxpython.org/). If it can serve as an example for anyone else learning [Python](https://www.python.org/) or [wxPython](http://www.wxpython.org/) that is great. If you are looking for a text editor to actually use I recommend [Sublime Text](http://www.sublimetext.com/).  
-
-## Show your support  
-
-Support this open source project and motivate me to continue development. Using [Beerpay.io](https://beerpay.io/nothingworksright/tmpNote?focus=wish) you can send me support, and make a wish for a new feature or issue fix.  
-
-[Click here to show your support](https://beerpay.io/nothingworksright/tmpNote?focus=wish).  
-
-[![Beerpay](https://beerpay.io/nothingworksright/tmpNote/badge.svg?style=beer)](https://beerpay.io/nothingworksright/tmpNote)  [![Beerpay](https://beerpay.io/nothingworksright/tmpNote/make-wish.svg?style=flat)](https://beerpay.io/nothingworksright/tmpNote?focus=wish)  
