@@ -20,8 +20,8 @@ Make commits that include detailed messages.
 
 ## Submitting  
 
-Push your changes to your topic branch, and then submit a pull request to the original repository in the nothingworksright organization. Reference the issue number in the pull request comments.  
+Push your changes to your topic branch, and then submit a pull request to the original repository in the unblinking I/O organization. Reference the issue number in the pull request comments.  
 
 ## Follow-up  
 
-If you haven't seen any activity from nothingworksright on your pull request, or you have questions, feel free to email.  
+If you haven't seen any activity from unblinking I/O on your pull request, or you have questions, feel free to email.  
